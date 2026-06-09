@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Xinran's Design Canvas</title>
+<style>
+  :root {
+    --bg: #f5f4ef;
+    --panel: #ffffff;
+    --ink: #111;
+    --muted: #6b6b66;
+    --line: #e2e0d8;
+    --line-strong: #c9c6bb;
+    --accent: #111;
+    --thumb-bg: #fafaf7;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    font-size: 19px;
+  }
+  header.top {
+    padding: 22px 48px 18px;
+    border-bottom: 1px solid var(--line);
+    background: var(--panel);
+    position: sticky; top: 0; z-index: 20;
+  }
+  header.top h1 {
+    margin: 0 0 4px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -.005em;
+  }
+  header.top p {
+    margin: 0;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  header.top code {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  .empty {
+    padding: 80px 40px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 18px;
+  }
+  .generations {
+    padding: 32px 40px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    max-width: 2100px;
+  }
+  .gen {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 32px;
+  }
+  .gen-main {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .gen-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .gen-id {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 16px;
+    color: var(--ink);
+    background: var(--bg);
+    padding: 5px 11px;
+    border-radius: 5px;
+  }
+  .gen-ts {
+    font-size: 15px;
+    color: var(--muted);
+    font-variant: tabular-nums;
+    margin-left: auto;
+  }
+  .gen-parent {
+    font-size: 15px;
+    color: #8a5a00;
+    background: #fff5e6;
+    border: 1px solid #f0d8a8;
+    padding: 5px 13px;
+    border-radius: 999px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    cursor: pointer;
+  }
+  .gen-parent:hover { background: #ffe9c4; }
+  .gen-side {
+    border-left: 1px solid var(--line);
+    padding-left: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .gen-side-label {
+    font-size: 13px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .gen-side-text {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ink);
+    margin: 0;
+  }
+  .gen-side-text.is-prompt {
+    font-style: italic;
+    color: #2a2a28;
+  }
+  .gen-side-secondary {
+    margin-top: 6px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line);
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+  @media (max-width: 1400px) {
+    .gen { grid-template-columns: 1fr; }
+    .gen-side { border-left: none; border-top: 1px solid var(--line); padding-left: 0; padding-top: 20px; }
+    .gen-ts { margin-left: auto; }
+  }
+  @media (max-width: 1100px) { .cards { grid-template-columns: repeat(2, 1fr); } }
+  .card {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--thumb-bg);
+    cursor: pointer;
+    transition: all 140ms ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .card:hover {
+    border-color: var(--line-strong);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0,0,0,.05);
+  }
+  .thumb {
+    aspect-ratio: 4 / 3;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    background: white;
+  }
+  .thumb iframe {
+    border: 0;
+    width: 1280px;
+    height: 960px;
+    transform: scale(.34);
+    transform-origin: top left;
+    pointer-events: none;
+  }
+  .thumb img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .thumb .placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: var(--muted); padding: 20px; text-align: center;
+  }
+  .card-meta {
+    padding: 16px 18px;
+    background: var(--panel);
+    border-top: 1px solid var(--line);
+  }
+  .card-name {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .card-id {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  /* ---------- view toggling ---------- */
+  body[data-view="grid"] .detail-view { display: none; }
+  body[data-view="detail"] .grid-view { display: none; }
+  body[data-view="detail"] { overflow: hidden; }
+
+  /* ---------- detail view (full-page viewer) ---------- */
+  .detail-view {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: var(--panel);
+  }
+  .detail-toolbar {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid var(--line);
+    background: var(--panel);
+    flex: none;
+  }
+  .detail-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 28px;
+    min-height: 66px;
+  }
+  .back-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 16px 0 14px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: var(--panel);
+    cursor: pointer;
+    font: inherit;
+    font-size: 16px;
+    color: var(--ink);
+    text-decoration: none;
+    transition: all 120ms ease;
+    flex: none;
+  }
+  .back-icon:hover { background: var(--bg); border-color: #999; }
+  .back-icon svg { width: 16px; height: 16px; }
+  .detail-divider {
+    width: 1px;
+    height: 28px;
+    background: var(--line);
+    flex: none;
+  }
+  .detail-gen-id {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 15px;
+    color: var(--ink);
+    background: var(--bg);
+    padding: 6px 12px;
+    border-radius: 6px;
+    flex: none;
+    letter-spacing: .02em;
+  }
+  .detail-summary-text {
+    font-size: 17px;
+    color: var(--ink);
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    min-width: 0;
+    line-height: 1.3;
+  }
+  .detail-parent-chip {
+    display: none;
+    align-items: center;
+    gap: 7px;
+    font-size: 14px;
+    color: #8a5a00;
+    background: #fff5e6;
+    border: 1px solid #f0d8a8;
+    padding: 6px 13px;
+    border-radius: 999px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    cursor: pointer;
+    flex: none;
+    transition: background 120ms ease;
+  }
+  .detail-parent-chip:hover { background: #ffe9c4; }
+  .detail-parent-chip.show { display: inline-flex; }
+  .detail-toggle-row {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    border-top: 1px solid var(--line);
+    background: var(--panel);
+    padding: 0 20px;
+  }
+  .detail-toggle {
+    position: relative;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    padding: 16px 18px 14px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 16px;
+    line-height: 1.2;
+    border-bottom: 2px solid transparent;
+    transition: color 120ms ease, border-color 120ms ease;
+    white-space: nowrap;
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .detail-toggle:hover { color: var(--ink); }
+  .detail-toggle.active {
+    color: var(--ink);
+    border-bottom-color: var(--accent);
+  }
+  .detail-toggle .num {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: .04em;
+    background: var(--bg);
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 120ms ease;
+  }
+  .detail-toggle.active .num {
+    color: #fff;
+    background: var(--accent);
+  }
+  .detail-toggle .name { font-weight: 500; }
+  .detail-body {
+    display: grid;
+    grid-template-columns: 1fr 440px;
+    flex: 1;
+    min-height: 0;
+  }
+  .detail-stage {
+    overflow: auto;
+    padding: 28px;
+    background: var(--bg);
+  }
+  .detail-stage-inner {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    min-height: 100%;
+  }
+  .detail-stage-inner img.base-img { display: block; width: 100%; height: auto; }
+  .detail-stage-inner iframe.base-frame { display: block; width: 100%; height: calc(100vh - 170px); border: 0; background: #fff; }
+  .detail-stage-inner .text-base {
+    padding: 48px 56px;
+    max-width: 720px;
+    font-size: 19px;
+    line-height: 1.7;
+    color: #333;
+    white-space: pre-wrap;
+  }
+  .detail-stage-inner .figma-base {
+    padding: 32px;
+    font-size: 17px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .detail-side {
+    border-left: 1px solid var(--line);
+    padding: 36px 32px;
+    overflow: auto;
+    background: var(--panel);
+  }
+  .detail-side h2 {
+    font-size: 14px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 12px;
+    font-weight: 600;
+  }
+  .detail-side h1 {
+    font-size: 34px;
+    margin: 0 0 24px;
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: -.01em;
+  }
+  .detail-side ul { list-style: none; padding: 0; margin: 0; }
+  .detail-side li {
+    padding: 18px 0;
+    border-top: 1px solid var(--line);
+    font-size: 18px;
+    line-height: 1.55;
+    color: #2a2a28;
+  }
+  .detail-side li:first-child { border-top: none; padding-top: 0; }
+  .source-note {
+    color: var(--muted);
+    font-size: 18px;
+    line-height: 1.6;
+    margin: 0;
+    white-space: pre-wrap;
+  }
+  .detail-meta {
+    margin-top: 32px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--line);
+    font-size: 15px;
+    color: var(--muted);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .detail-meta button, .detail-meta a {
+    display: inline-block;
+    margin-top: 12px;
+    margin-right: 10px;
+    border: 1px solid var(--line);
+    background: white;
+    border-radius: 6px;
+    padding: 9px 14px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 15px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .detail-meta button:hover, .detail-meta a:hover { background: var(--bg); }
+</style>
+</head>
+<body data-view="grid">
+
+<div class="grid-view">
+  <header class="top">
+    <h1>Xinran's Design Canvas</h1>
+    <p><code>__PROJECT_PATH__</code></p>
+  </header>
+
+  __BODY__
+</div>
+
+<div class="detail-view">
+  <div class="detail-toolbar">
+    <div class="detail-meta-row">
+      <a class="back-icon" href="#" data-action="back" title="Back to all generations">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3l-5 5 5 5"/></svg>
+        <span>Canvas</span>
+      </a>
+      <span class="detail-divider"></span>
+      <span class="detail-gen-id" id="detail-gen-id"></span>
+      <span class="detail-summary-text" id="detail-summary-text"></span>
+      <span class="detail-parent-chip" id="detail-parent-chip" data-parent-jump=""></span>
+    </div>
+    <div class="detail-toggle-row" id="detail-toggle-buttons"></div>
+  </div>
+  <div class="detail-body">
+    <div class="detail-stage">
+      <div class="detail-stage-inner" id="detail-stage-inner"></div>
+    </div>
+    <aside class="detail-side">
+      <h2 id="detail-eyebrow">Variant</h2>
+      <h1 id="detail-name"></h1>
+      <ul id="detail-rationale"></ul>
+      <p class="source-note" id="detail-source-note" style="display:none"></p>
+      <div class="detail-meta">
+        <div>id: <span id="detail-id"></span></div>
+        <button data-action="copy-id">Copy ID</button>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+const DATA = __DATA_JSON__;
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function findGenById(genId) {
+  return DATA.generations.find(g => g.id === genId);
+}
+
+function findVariant(id) {
+  for (const gen of DATA.generations) {
+    for (const v of gen.variants) if (v.id === id) return { gen, variant: v };
+  }
+  return null;
+}
+
+function renderBaseHtml(base) {
+  if (!base) return '<div style="padding:40px;color:#888">No base recorded.</div>';
+  if (base.kind === 'url') {
+    const url = escapeHtml(base.content || '');
+    return `<iframe class="base-frame" src="${url}" referrerpolicy="no-referrer"></iframe>`;
+  }
+  if (base.kind === 'image' && base.rendered_src) {
+    return `<img class="base-img" src="${escapeHtml(base.rendered_src)}" alt="base">`;
+  }
+  if (base.kind === 'html') return base.content || '';
+  if (base.kind === 'figma') {
+    const img = base.rendered_src ? `<img class="base-img" src="${escapeHtml(base.rendered_src)}">` : '';
+    const url = escapeHtml(base.content || '');
+    return `<div class="figma-base">${img}<p>Source: <a href="${url}" target="_blank">${url}</a></p></div>`;
+  }
+  return `<div class="text-base">${escapeHtml(base.content || '')}</div>`;
+}
+
+let currentGen = null;
+let gridScrollY = 0;
+
+function renderToggleBar(gen, activeTarget) {
+  const btns = [];
+  btns.push(
+    `<button class="detail-toggle ${activeTarget === 'base' ? 'active' : ''}" data-target="base">` +
+    `<span class="num">Base</span><span class="name">${gen.parent_id ? 'Parent option' : 'Prompt'}</span></button>`
+  );
+  gen.variants.forEach((v, i) => {
+    const tgt = `v${i+1}`;
+    btns.push(
+      `<button class="detail-toggle ${activeTarget === tgt ? 'active' : ''}" data-target="${tgt}">` +
+      `<span class="num">Option ${i+1}</span><span class="name">${escapeHtml(v.direction_name)}</span></button>`
+    );
+  });
+  document.getElementById('detail-toggle-buttons').innerHTML = btns.join('');
+}
+
+function showTarget(target) {
+  if (!currentGen) return;
+  const stage = document.getElementById('detail-stage-inner');
+  const eyebrow = document.getElementById('detail-eyebrow');
+  const name = document.getElementById('detail-name');
+  const rat = document.getElementById('detail-rationale');
+  const src = document.getElementById('detail-source-note');
+  const idEl = document.getElementById('detail-id');
+
+  if (target === 'base') {
+    stage.innerHTML = renderBaseHtml(currentGen.base);
+    eyebrow.textContent = currentGen.parent_id ? 'Parent option' : 'PROMPT USED';
+    name.textContent = currentGen.parent_id ? 'Forked from ' + currentGen.parent_id : 'Base design';
+    rat.style.display = 'none';
+    src.style.display = '';
+    const promptText = currentGen.revision_hint || currentGen.source_summary || '';
+    src.textContent = promptText ? `"${promptText}"` : '';
+    idEl.textContent = currentGen.id + '-base';
+  } else {
+    const idx = parseInt(target.slice(1), 10) - 1;
+    const v = currentGen.variants[idx];
+    if (!v) return;
+    if (v.iframe_src) {
+      stage.innerHTML = `<iframe class="base-frame" src="${escapeHtml(v.iframe_src)}" referrerpolicy="no-referrer"></iframe>`;
+    } else {
+      stage.innerHTML = v.html;
+    }
+    eyebrow.textContent = `Option ${idx + 1}`;
+    name.textContent = v.direction_name;
+    rat.style.display = '';
+    src.style.display = 'none';
+    rat.innerHTML = (v.rationale || []).map(b => `<li>${escapeHtml(b)}</li>`).join('');
+    idEl.textContent = v.id;
+  }
+  document.querySelectorAll('.detail-toggle').forEach(b => b.classList.toggle('active', b.dataset.target === target));
+  // reset stage scroll so each toggle starts from the top — same eye position for each design
+  document.querySelector('.detail-stage').scrollTop = 0;
+
+  // update hash without adding history entries (we already pushed on entering detail)
+  const hash = target === 'base' ? currentGen.id + '-base' : currentGen.id + '-Option' + target.slice(1);
+  if (location.hash !== '#' + hash) {
+    history.replaceState({ view: 'detail', hash }, '', '#' + hash);
+  }
+}
+
+function showDetailForGen(genId, initialTarget) {
+  const gen = findGenById(genId);
+  if (!gen) return false;
+  if (document.body.dataset.view !== 'detail') {
+    gridScrollY = window.scrollY;
+  }
+  currentGen = gen;
+  document.getElementById('detail-gen-id').textContent = gen.id;
+  document.getElementById('detail-summary-text').textContent = gen.source_summary || '';
+  const chip = document.getElementById('detail-parent-chip');
+  if (gen.parent_id) {
+    chip.innerHTML = `<svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v6a3 3 0 0 0 3 3h3"/><path d="M9 9l3 3-3 3"/></svg> forked from ${gen.parent_id}`;
+    chip.dataset.parentJump = gen.parent_id;
+    chip.classList.add('show');
+  } else {
+    chip.classList.remove('show');
+    chip.dataset.parentJump = '';
+  }
+  renderToggleBar(gen, initialTarget);
+  document.body.dataset.view = 'detail';
+  showTarget(initialTarget);
+  return true;
+}
+
+function showDetailForVariant(variantId) {
+  const found = findVariant(variantId);
+  if (found) {
+    const idx = found.gen.variants.indexOf(found.variant);
+    return showDetailForGen(found.gen.id, `v${idx + 1}`);
+  }
+  const m = variantId.match(/^(V\d+)-base$/);
+  if (m) return showDetailForGen(m[1], 'base');
+  return false;
+}
+
+function showGrid() {
+  document.body.dataset.view = 'grid';
+  currentGen = null;
+  window.scrollTo(0, gridScrollY);
+}
+
+document.addEventListener('click', (e) => {
+  const tgl = e.target.closest('.detail-toggle');
+  if (tgl) { showTarget(tgl.dataset.target); return; }
+  const back = e.target.closest('[data-action="back"]');
+  if (back) {
+    e.preventDefault();
+    history.pushState({ view: 'grid' }, '', location.pathname + location.search);
+    showGrid();
+    return;
+  }
+  const card = e.target.closest('[data-variant-id]');
+  if (card) {
+    e.preventDefault();
+    const id = card.dataset.variantId;
+    if (showDetailForVariant(id)) {
+      history.pushState({ view: 'detail', hash: id }, '', '#' + id);
+    }
+    return;
+  }
+  if (e.target.matches('[data-action="copy-id"]')) {
+    navigator.clipboard.writeText(document.getElementById('detail-id').textContent);
+    e.target.textContent = 'copied';
+    setTimeout(() => e.target.textContent = 'Copy ID', 1200);
+    return;
+  }
+  const jump = e.target.closest('[data-jump]');
+  if (jump) {
+    e.preventDefault();
+    const id = jump.dataset.jump;
+    if (showDetailForVariant(id)) {
+      history.pushState({ view: 'detail', hash: id }, '', '#' + id);
+    }
+    return;
+  }
+  const parentPill = e.target.closest('[data-parent-jump]');
+  if (parentPill) {
+    e.preventDefault();
+    const id = parentPill.dataset.parentJump;
+    if (showDetailForVariant(id)) {
+      history.pushState({ view: 'detail', hash: id }, '', '#' + id);
+    }
+    return;
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (document.body.dataset.view !== 'detail') return;
+  if (e.key === 'Escape') {
+    history.pushState({ view: 'grid' }, '', location.pathname + location.search);
+    showGrid();
+    return;
+  }
+  const map = { '1':'base', '2':'v1', '3':'v2', '4':'v3', '5':'v4' };
+  if (map[e.key]) showTarget(map[e.key]);
+});
+
+window.addEventListener('popstate', () => {
+  const h = location.hash.replace(/^#/, '');
+  if (!h) { showGrid(); return; }
+  if (/^V\d+-Option\d+$/.test(h) || /^V\d+-base$/.test(h)) { showDetailForVariant(h); }
+  else if (/^V\d+$/.test(h)) { showDetailForGen(h, 'v1'); }
+});
+
+// initial routing from URL hash
+function bootstrap() {
+  const h = location.hash.replace(/^#/, '');
+  if (!h) { showGrid(); return; }
+  if (/^V\d+-Option\d+$/.test(h) || /^V\d+-base$/.test(h)) { showDetailForVariant(h); }
+  else if (/^V\d+$/.test(h)) { showDetailForGen(h, 'v1'); }
+}
+bootstrap();
+</script>
+</body>
+</html>

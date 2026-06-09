@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<!--
+  DECK SCAFFOLD : Modern Swiss Editorial
+  This is the portable shell. Compose slides into the SLIDES region.
+  Do NOT change the toggle logic, theme tokens, or font presets unless asked.
+  Live controls baked in: F cycles fonts, C cycles color styles, arrows/space navigate.
+-->
+<html lang="en" data-theme="verdant" data-font="editorial" data-trans="push">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>__DECK_TITLE__</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800;900&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   FONT PRESETS  (toggle with F)
+   ============================================================ */
+:root,[data-font="editorial"]{ --serif:"Newsreader",Georgia,serif; --sans:"Inter",system-ui,sans-serif; --serif-tracking:-0.01em; }
+[data-font="contrast"]{ --serif:"Fraunces",Georgia,serif; --sans:"Inter Tight",system-ui,sans-serif; --serif-tracking:-0.015em; }
+[data-font="refined"]{ --serif:"Instrument Serif",Georgia,serif; --sans:"Geist",system-ui,sans-serif; --serif-tracking:0em; }
+[data-font="literary"]{ --serif:"Playfair Display",Georgia,serif; --sans:"Work Sans",system-ui,sans-serif; --serif-tracking:-0.005em; }
+
+/* ============================================================
+   COLOR STYLES  (toggle with C)
+   Each theme maps four semantic surfaces + two fill tokens.
+   Surfaces: paper (light), ink (near-black), brand (deep brand), accent (vivid).
+   Per surface we set: --s-bg, --s-text, --s-dim, --s-head, --s-accent.
+   Fills (for cards/pills regardless of host surface): --fill, --on-fill.
+   ============================================================ */
+[data-theme="verdant"]{ --fill:#c2e84e; --on-fill:#12351f; }
+[data-theme="verdant"] .surf-paper{ --s-bg:#f7f7f2; --s-text:#1a1a1a; --s-dim:#6f6f68; --s-head:#111111; --s-accent:#12351f; }
+[data-theme="verdant"] .surf-ink  { --s-bg:#0a0a0a; --s-text:#f1f1ef; --s-dim:#8d8d88; --s-head:#ffffff; --s-accent:#c2e84e; }
+[data-theme="verdant"] .surf-brand{ --s-bg:#12351f; --s-text:#e7f1dd; --s-dim:#8fb588; --s-head:#c2e84e; --s-accent:#c2e84e; }
+[data-theme="verdant"] .surf-accent{ --s-bg:#c2e84e; --s-text:#1b3d22; --s-dim:#4a6e3f; --s-head:#12351f; --s-accent:#12351f; }
+
+[data-theme="noir"]{ --fill:#3257ff; --on-fill:#ffffff; }
+[data-theme="noir"] .surf-paper{ --s-bg:#f4f4f5; --s-text:#141417; --s-dim:#6c6c74; --s-head:#0c0c0e; --s-accent:#3257ff; }
+[data-theme="noir"] .surf-ink  { --s-bg:#000000; --s-text:#f3f3f5; --s-dim:#86868f; --s-head:#ffffff; --s-accent:#5d82ff; }
+[data-theme="noir"] .surf-brand{ --s-bg:#10131c; --s-text:#dfe2ec; --s-dim:#7e8499; --s-head:#7e9bff; --s-accent:#5d82ff; }
+[data-theme="noir"] .surf-accent{ --s-bg:#3257ff; --s-text:#e8ecff; --s-dim:#9fb0ff; --s-head:#ffffff; --s-accent:#ffffff; }
+
+[data-theme="terra"]{ --fill:#d8743f; --on-fill:#2b1a10; }
+[data-theme="terra"] .surf-paper{ --s-bg:#f3ecdf; --s-text:#2b2622; --s-dim:#7c7264; --s-head:#221e1a; --s-accent:#c0612f; }
+[data-theme="terra"] .surf-ink  { --s-bg:#1c1916; --s-text:#f1e9da; --s-dim:#8f8678; --s-head:#faf4e8; --s-accent:#e08a52; }
+[data-theme="terra"] .surf-brand{ --s-bg:#2b2622; --s-text:#ece3d4; --s-dim:#9a8f7e; --s-head:#e08a52; --s-accent:#e08a52; }
+[data-theme="terra"] .surf-accent{ --s-bg:#d8743f; --s-text:#2b1a10; --s-dim:#7a4526; --s-head:#2b1a10; --s-accent:#2b1a10; }
+
+/* ============================================================
+   RESET + STAGE  (fixed 1280x720, scaled to fit = true 16:9)
+   ============================================================ */
+*{ box-sizing:border-box; margin:0; padding:0; }
+html,body{ height:100%; background:#0c0c0c; overflow:hidden; }
+body{ font-family:var(--sans); -webkit-font-smoothing:antialiased; }
+.viewport{ position:fixed; inset:0; display:flex; align-items:center; justify-content:center; }
+.stage{ width:1280px; height:720px; position:relative; transform-origin:center center; overflow:hidden; }
+
+/* ============================================================
+   SLIDE CHROME
+   ============================================================ */
+.slide{
+  position:absolute; inset:0;
+  background:var(--s-bg); color:var(--s-text);
+  padding:64px 84px;
+  display:flex; flex-direction:column;
+  opacity:0; visibility:hidden;
+  transition:opacity .5s ease, transform .6s cubic-bezier(.4,0,.2,1), filter .5s ease;
+  will-change:opacity, transform, filter;
+}
+.slide.is-active{ opacity:1; visibility:visible; }
+
+/* header band: caps kicker (left) + page number (right) + hairline */
+.head{ display:flex; justify-content:space-between; align-items:baseline;
+  padding-bottom:14px; border-bottom:1px solid; border-color:color-mix(in srgb, var(--s-dim) 55%, transparent); }
+.kicker{ font-family:var(--sans); font-size:13px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--s-text); }
+.pageno{ font-family:var(--sans); font-size:13px; font-weight:500; letter-spacing:.06em; color:var(--s-dim); }
+
+.body{ flex:1; display:flex; flex-direction:column; justify-content:center; padding:44px 0 16px; }
+
+/* typography */
+.display{ font-family:var(--serif); font-weight:600; line-height:.98; letter-spacing:var(--serif-tracking);
+  color:var(--s-head); font-size:104px; }
+.h1{ font-family:var(--serif); font-weight:600; line-height:1.02; letter-spacing:var(--serif-tracking); color:var(--s-head); font-size:68px; }
+.h2{ font-family:var(--serif); font-weight:600; line-height:1.05; letter-spacing:var(--serif-tracking); color:var(--s-head); font-size:40px; }
+.eyebrow{ font-family:var(--sans); font-size:13px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--s-dim); }
+.lead{ font-family:var(--sans); font-size:24px; line-height:1.45; font-weight:400; color:var(--s-text); max-width:30ch; }
+.text{ font-family:var(--sans); font-size:18px; line-height:1.55; color:var(--s-text); }
+.dim{ color:var(--s-dim); }
+.serif-num{ font-family:var(--serif); font-weight:600; line-height:.9; letter-spacing:var(--serif-tracking); }
+
+/* layout helpers */
+.row{ display:flex; gap:64px; }
+.col{ display:flex; flex-direction:column; }
+.grow{ flex:1; }
+.between{ justify-content:space-between; }
+.center-v{ align-items:center; }
+.gap-s{ gap:16px; } .gap-m{ gap:28px; } .gap-l{ gap:48px; }
+.grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:48px; }
+.grid-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:32px; }
+.grid-4{ display:grid; grid-template-columns:repeat(4,1fr); gap:28px; }
+.mt-a{ margin-top:auto; }
+
+/* hairline divider */
+.rule{ height:1px; background:color-mix(in srgb, var(--s-dim) 55%, transparent); border:0; width:100%; }
+.rule-accent{ height:2px; width:64px; background:var(--s-accent); border:0; }
+
+/* footer meta row (title slide) */
+.foot{ display:flex; gap:72px; align-items:flex-start; }
+.foot .label{ font-family:var(--sans); font-size:17px; font-weight:600; color:var(--s-accent); }
+.foot .sub{ font-family:var(--sans); font-size:14px; color:var(--s-text); margin-top:2px; }
+
+/* fill card (stat card / pill): uses theme fill regardless of surface */
+.card-fill{ background:var(--fill); color:var(--on-fill); }
+.pill{ display:inline-block; background:var(--fill); color:var(--on-fill);
+  font-family:var(--sans); font-weight:600; font-size:16px; padding:8px 20px; border-radius:999px; }
+
+/* agenda list with dividers */
+.list-divided{ display:flex; flex-direction:column; }
+.list-divided > *{ font-family:var(--sans); font-size:24px; color:var(--s-text); padding:18px 0; border-top:1px solid color-mix(in srgb, var(--s-dim) 50%, transparent); }
+.list-divided > *:last-child{ border-bottom:1px solid color-mix(in srgb, var(--s-dim) 50%, transparent); }
+
+/* column with left rule (next steps) */
+.bordered{ border-left:2px solid var(--s-accent); padding-left:20px; }
+
+/* big stat */
+.stat .serif-num{ font-size:96px; color:var(--on-fill); }
+.stat .stat-label{ font-family:var(--sans); font-size:13px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px; }
+
+/* image placeholder */
+.ph{ width:100%; aspect-ratio:3/4; background:
+  repeating-conic-gradient(color-mix(in srgb,var(--s-dim) 22%, transparent) 0% 25%, transparent 0% 50%) 50% / 28px 28px; }
+
+/* timeline */
+.timeline{ position:relative; }
+.timeline .track{ height:1px; background:var(--s-accent); width:100%; margin:18px 0; position:relative; }
+.timeline .node{ width:10px; height:10px; border-radius:50%; background:var(--s-accent); position:absolute; top:-4.5px; }
+
+/* ============================================================
+   MOTION  (slide-transition modes, toggle with M)
+   Fade  = crossfade + per-element rise stagger (default)
+   Slide = whole slide drifts horizontally (direction-aware)
+   Zoom  = whole slide scales in
+   Push  = cinematic: outgoing recedes/blurs, incoming pushes in
+           full-screen from the edge (direction-aware)
+   The rise stagger is the signature of Fade; in Slide/Zoom/Push
+   the slide moves as one unit, so rise is made inert.
+   ============================================================ */
+.slide .rise{ opacity:0; transform:translateY(18px); transition:opacity .5s ease, transform .5s cubic-bezier(.2,.7,.2,1); }
+.slide.is-active .rise{ opacity:1; transform:none; }
+[data-trans="slide"] .slide .rise,
+[data-trans="zoom"]  .slide .rise,
+[data-trans="push"]  .slide .rise{ opacity:1; transform:none; transition:none; }
+@media (prefers-reduced-motion:reduce){
+  .slide{ transition:opacity .2s ease; }
+  .slide .rise{ transition:none; transform:none; opacity:1; }
+}
+
+/* ============================================================
+   ON-SCREEN INDICATOR + HINT
+   ============================================================ */
+.hud{ position:fixed; left:18px; bottom:14px; z-index:10; display:flex; gap:10px; align-items:center;
+  font-family:"Inter",system-ui,sans-serif; font-size:11px; letter-spacing:.04em; color:#fff;
+  background:rgba(0,0,0,.55); padding:6px 12px; border-radius:999px; backdrop-filter:blur(6px);
+  opacity:.5; transition:opacity .2s; }
+.hud:hover{ opacity:1; }
+.hud b{ font-weight:600; } .hud .sep{ opacity:.4; }
+.pageHud{ position:fixed; right:18px; bottom:14px; z-index:10; font-family:"Inter",system-ui,sans-serif;
+  font-size:11px; letter-spacing:.08em; color:#fff; background:rgba(0,0,0,.55); padding:6px 12px;
+  border-radius:999px; opacity:.5; }
+
+/* ============================================================
+   LEFT NAV  (toggle with O · Esc closes)
+   Slide-overview drawer. Thumbnails are scaled clones of each slide.
+   ============================================================ */
+.nav{ position:fixed; left:0; top:0; bottom:0; width:284px; z-index:20;
+  background:rgba(12,12,12,.92); backdrop-filter:blur(12px); color:#fff;
+  padding:18px 14px 18px 16px; overflow-y:auto; overflow-x:hidden;
+  font-family:"Inter",system-ui,sans-serif;
+  border-right:1px solid rgba(255,255,255,.08);
+  transform:translateX(-102%); transition:transform .35s cubic-bezier(.4,0,.2,1);
+  will-change:transform; }
+body.nav-open .nav{ transform:translateX(0); }
+.nav-head{ display:flex; justify-content:space-between; align-items:baseline;
+  font-size:11px; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+  color:rgba(255,255,255,.55); padding:4px 6px 14px; }
+.nav-head .hint{ font-weight:500; letter-spacing:.06em; text-transform:none; color:rgba(255,255,255,.4); }
+.nav-list{ display:flex; flex-direction:column; gap:10px; }
+.nav-item{ display:flex; gap:12px; align-items:center; padding:6px;
+  border-radius:6px; cursor:pointer; transition:background .15s ease; }
+.nav-item:hover{ background:rgba(255,255,255,.06); }
+.nav-item.is-current{ background:rgba(255,255,255,.10); outline:1px solid rgba(255,255,255,.18); }
+.nav-num{ font-size:10px; font-weight:600; letter-spacing:.06em; color:rgba(255,255,255,.5);
+  width:22px; flex:0 0 22px; text-align:right; font-variant-numeric:tabular-nums; }
+.nav-thumb{ position:relative; width:200px; height:112px; flex:0 0 auto;
+  border-radius:4px; overflow:hidden; background:#222;
+  box-shadow:0 2px 14px rgba(0,0,0,.55); }
+.nav-thumb .thumb-stage{ width:1280px; height:720px; transform:scale(.15625); transform-origin:0 0; pointer-events:none; }
+.nav-thumb .thumb-stage .slide{ position:absolute; inset:0; opacity:1 !important; visibility:visible !important;
+  transform:none !important; filter:none !important; transition:none !important; }
+.nav-thumb .thumb-stage .slide .rise{ opacity:1 !important; transform:none !important; transition:none !important; }
+
+@media print{ .hud,.pageHud,.nav{ display:none; } }
+</style>
+</head>
+<body>
+<div class="viewport">
+  <div class="stage" id="stage">
+    <!-- SLIDES:START -->
+
+    <!-- Example slides demonstrating each surface. Replace with composed content. -->
+    <section class="slide surf-brand is-active">
+      <div class="body">
+        <h1 class="display rise">__DECK_TITLE__</h1>
+      </div>
+      <div class="foot rise">
+        <div><div class="label">__PROJECT__</div><div class="sub">__SUBTITLE__</div></div>
+        <div><div class="label">__PRESENTER__</div><div class="sub">__ROLE__</div></div>
+      </div>
+    </section>
+
+    <!-- SLIDES:END -->
+  </div>
+</div>
+
+<aside class="nav" id="nav">
+  <div class="nav-head"><span>Slides</span><span class="hint">O to close</span></div>
+  <div class="nav-list" id="navList"></div>
+</aside>
+
+<div class="hud" id="hud"><b id="hudFont">Editorial</b><span class="sep">/</span><b id="hudTheme">Verdant</b><span class="sep">/</span><b id="hudTrans">Push</b><span class="sep">·</span><span style="opacity:.7">O · F · C · M · ← →</span></div>
+<div class="pageHud" id="pageHud">01 / 01</div>
+
+<script>
+(function(){
+  var FONTS = [["editorial","Editorial"],["contrast","Contrast"],["refined","Refined"],["literary","Literary"]];
+  var THEMES = [["verdant","Verdant"],["noir","Noir"],["terra","Terra"]];
+  var TRANS = [["push","Push"],["fade","Fade"],["slide","Slide"],["zoom","Zoom"]];
+  var fi = 0, ti = 0, xi = 0;
+  var root = document.documentElement;
+  var stage = document.getElementById("stage");
+  var pageHud = document.getElementById("pageHud");
+  var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+  var cur = slides.findIndex(function(s){ return s.classList.contains("is-active"); });
+  if(cur < 0) cur = 0;
+
+  function fit(){
+    var s = Math.min(window.innerWidth/1280, window.innerHeight/720);
+    stage.style.transform = "scale("+s+")";
+  }
+  function stagger(slide){
+    slide.querySelectorAll(".rise").forEach(function(el,i){ el.style.transitionDelay = (0.04 + i*0.07) + "s"; });
+  }
+  // Off-screen start state for an incoming slide, by mode + direction.
+  function enterStart(s, mode, dir){
+    if(mode==="slide"){ s.style.transform = "translateX("+(dir*7)+"%)"; s.style.filter = ""; }
+    else if(mode==="zoom"){ s.style.transform = "scale(.95)"; s.style.filter = ""; }
+    else if(mode==="push"){
+      if(dir>0){ s.style.transform = "translateX(100%)"; s.style.filter = "none"; }
+      else     { s.style.transform = "translateX(-22%) scale(.92)"; s.style.filter = "blur(8px)"; }
+    }
+    else { s.style.transform = "none"; s.style.filter = ""; }
+    s.style.opacity = "0";
+  }
+  // End state for an outgoing slide.
+  function exitEnd(s, mode, dir){
+    if(mode==="slide"){ s.style.transform = "translateX("+(-dir*7)+"%)"; s.style.filter = ""; }
+    else if(mode==="zoom"){ s.style.transform = "scale(1.03)"; s.style.filter = ""; }
+    else if(mode==="push"){
+      if(dir>0){ s.style.transform = "translateX(-22%) scale(.92)"; s.style.filter = "blur(8px)"; }
+      else     { s.style.transform = "translateX(100%)"; s.style.filter = "none"; }
+    }
+    else { s.style.transform = "none"; s.style.filter = ""; }
+    s.style.opacity = "0";
+  }
+  function show(n, dir){
+    if(n<0||n>=slides.length) return;
+    dir = dir===undefined ? 1 : (dir<0 ? -1 : 1);
+    var mode = TRANS[xi][0];
+    var next = slides[n], prev = slides[cur];
+
+    if(next !== prev){
+      prev.classList.remove("is-active");
+      exitEnd(prev, mode, dir);
+      (function(p){ window.setTimeout(function(){
+        if(!p.classList.contains("is-active")) p.style.visibility = "hidden";
+      }, 580); })(prev);
+    }
+
+    // Prime the incoming slide at its start state without animating, then release.
+    next.style.transition = "none";
+    next.style.visibility = "visible";
+    next.querySelectorAll(".rise").forEach(function(el){ el.style.transitionDelay = ""; });
+    enterStart(next, mode, dir);
+    void next.offsetWidth;            // reflow so the start state takes effect
+    next.style.transition = "";       // restore CSS-defined transition
+    next.classList.add("is-active");
+    next.style.transform = "none";
+    next.style.opacity = "1";
+    next.style.filter = "none";
+    if(mode === "fade") stagger(next); // element rise is the Fade signature
+
+    cur = n;
+    pageHud.textContent = String(cur+1).padStart(2,"0")+" / "+String(slides.length).padStart(2,"0");
+    updateNavCurrent();
+  }
+  function cycleFont(){ fi=(fi+1)%FONTS.length; root.dataset.font=FONTS[fi][0]; document.getElementById("hudFont").textContent=FONTS[fi][1]; }
+  function cycleTheme(){ ti=(ti+1)%THEMES.length; root.dataset.theme=THEMES[ti][0]; document.getElementById("hudTheme").textContent=THEMES[ti][1]; }
+  function cycleTrans(){ xi=(xi+1)%TRANS.length; root.dataset.trans=TRANS[xi][0]; document.getElementById("hudTrans").textContent=TRANS[xi][1]; }
+
+  function buildNav(){
+    var list = document.getElementById("navList");
+    list.innerHTML = "";
+    slides.forEach(function(s, i){
+      var item = document.createElement("div");
+      item.className = "nav-item";
+      item.dataset.index = i;
+      var num = document.createElement("div");
+      num.className = "nav-num";
+      num.textContent = String(i+1).padStart(2,"0");
+      var thumb = document.createElement("div");
+      thumb.className = "nav-thumb";
+      var stageEl = document.createElement("div");
+      stageEl.className = "thumb-stage";
+      var clone = s.cloneNode(true);
+      clone.classList.add("is-active");
+      // Clear any inline styles left from the live transition system
+      clone.style.cssText = "";
+      clone.querySelectorAll(".rise").forEach(function(r){ r.style.cssText = ""; });
+      stageEl.appendChild(clone);
+      thumb.appendChild(stageEl);
+      item.appendChild(num);
+      item.appendChild(thumb);
+      item.addEventListener("click", function(){
+        var n = parseInt(item.dataset.index, 10);
+        if(n !== cur) show(n, n > cur ? 1 : -1);
+        toggleNav(false);
+      });
+      list.appendChild(item);
+    });
+    updateNavCurrent();
+  }
+  function updateNavCurrent(){
+    var items = document.querySelectorAll(".nav-item");
+    if(!items.length) return;
+    items.forEach(function(it, i){ it.classList.toggle("is-current", i===cur); });
+    var active = items[cur];
+    if(active) active.scrollIntoView({block:"nearest", behavior:"smooth"});
+  }
+  function toggleNav(force){
+    var open = (force===undefined) ? !document.body.classList.contains("nav-open") : !!force;
+    if(open && !document.getElementById("navList").childElementCount) buildNav();
+    document.body.classList.toggle("nav-open", open);
+    if(open) updateNavCurrent();
+  }
+
+  document.addEventListener("keydown", function(e){
+    if(e.key==="ArrowRight"||e.key===" "||e.key==="PageDown"){ e.preventDefault(); show(cur+1, 1); }
+    else if(e.key==="ArrowLeft"||e.key==="PageUp"){ e.preventDefault(); show(cur-1, -1); }
+    else if(e.key==="f"||e.key==="F"){ cycleFont(); }
+    else if(e.key==="c"||e.key==="C"){ cycleTheme(); }
+    else if(e.key==="m"||e.key==="M"){ cycleTrans(); }
+    else if(e.key==="o"||e.key==="O"){ toggleNav(); }
+    else if(e.key==="Escape"){ toggleNav(false); }
+    else if(e.key==="Home"){ show(0, -1); }
+    else if(e.key==="End"){ show(slides.length-1, 1); }
+  });
+  window.addEventListener("resize", fit);
+  fit(); show(cur, 1);
+})();
+</script>
+</body>
+</html>
