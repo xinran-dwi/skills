@@ -8,9 +8,12 @@ _Disclaimer: It is a work-in-progress personal tool._
 
 ## Install (one time)
 
-1. Unzip `slide.zip`
-2. Move the `slide/` folder into `~/.claude/skills/` (create the folder if it doesn't exist)
-3. Restart Claude Code
+```bash
+git clone https://github.com/xinran-dwi/skills.git
+mv skills/slide ~/.claude/skills/
+```
+
+Restart Claude Code.
 
 ## Use it
 
