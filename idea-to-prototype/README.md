@@ -1,7 +1,5 @@
 Creator: Xinran Ma | designwithai.co
 
-_Disclaimer: It is a work-in-progress personal tool._
-
 # idea-to-prototype — how to use
 
 **What it is:** Turns a rough product idea into a structured design spec (markdown) ready to paste into a prototyping tool — Figma Make, v0, Stitch, Pencil, or similar. Bridges the gap between "I have an idea" and "I have something to show."
