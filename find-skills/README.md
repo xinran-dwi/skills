@@ -1,7 +1,3 @@
-Creator: Xinran Ma | designwithai.co
-
-_Disclaimer: It is a work-in-progress personal tool._
-
 # find-skills — how to use
 
 **What it is:** Searches the open skills ecosystem ([skills.sh](https://skills.sh/)) to find a Claude Code skill that matches what you need. Helps you discover installable skills for common tasks so you don't have to build everything from scratch.
