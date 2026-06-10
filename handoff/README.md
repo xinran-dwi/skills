@@ -49,10 +49,19 @@ Restart Claude Code.
 
 ### How it differs from `/resume`
 
+Claude Code has a built-in `/resume` command that restores your previous conversation — it's like rewinding a chat. The context is stored inside Claude's session system, so it replays everything: your messages, Claude's responses, tool calls, the whole thread.
+
+The catch is that **`/resume` has a session expiry**. Once the session expires (typically within 24 hours of inactivity), the conversation is gone and `/resume` has nothing to restore. Come back after a day or more and you're starting cold.
+
+`/handoff` solves this by saving a curated summary of your *project state* — not the conversation — to a plain `HANDOFF.md` file in your repo. Because it's just a file, it works anywhere the repo goes: different machine, next week, a teammate picking it up. It also captures things `/resume` buries — what failed, open decisions, the exact next step — rather than making you re-read a wall of conversation to find where you left off.
+
+**Rule of thumb:** picking up within the same day on the same machine, `/resume` is fine. Coming back after a day or more, switching machines, or wanting a clean brief — use `/handoff`.
+
 | | `/resume` (built-in) | `/handoff` (this skill) |
 |---|---|---|
 | Restores | Full conversation transcript | Curated 1-page project state |
 | Stored in | Claude's internal session store | `HANDOFF.md` in your repo |
+| Session expiry | Yes — gone after ~24h of inactivity | No — file lives in your repo forever |
 | Works on another machine | No | Yes |
 | Captures failed approaches | Buried in conversation | Dedicated section |
 | Dev server startup | No | Auto-detected and started |
