@@ -3,7 +3,9 @@ More resources like this on: designwithai.co
 
 # idea-to-prototype
 
-**What it is:** Turns a rough product idea into a structured design spec (markdown) ready to paste into a prototyping tool — Figma Make, v0, Stitch, Pencil, or similar. Bridges the gap between "I have an idea" and "I have something to show."
+## What it is
+
+Turns a rough product idea into a structured design spec (markdown) ready to paste into a prototyping tool — Figma Make, v0, Stitch, Pencil, or similar. Bridges the gap between "I have an idea" and "I have something to show."
 
 ## When to use it
 

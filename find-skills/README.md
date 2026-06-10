@@ -3,7 +3,9 @@ More resources like this on: designwithai.co
 
 # find-skills
 
-**What it is:** Searches the open skills ecosystem ([skills.sh](https://skills.sh/)) to find a Claude Code skill that matches what you need — so you don't have to build everything from scratch.
+## What it is
+
+Searches the open skills ecosystem ([skills.sh](https://skills.sh/)) to find a Claude Code skill that matches what you need — so you don't have to build everything from scratch.
 
 ## When to use it
 

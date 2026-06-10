@@ -5,7 +5,9 @@ _Disclaimer: It is a work-in-progress personal tool_
 
 # design-explore-canvas
 
-**What it is:** Generates 4 meaningfully distinct design directions from a single base design (screenshot, Figma URL, code file, or description), each with bullet-point rationale explaining the *why*. Appends every generation to a per-project visual canvas — like version control for design ideas — so you can scroll back, compare, and fork from any previous option.
+## What it is
+
+Generates 4 meaningfully distinct design directions from a single base design (screenshot, Figma URL, code file, or description), each with bullet-point rationale explaining the *why*. Appends every generation to a per-project visual canvas — like version control for design ideas — so you can scroll back, compare, and fork from any previous option.
 
 ## When to use it
 
