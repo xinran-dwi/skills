@@ -1,10 +1,21 @@
-Creator: Xinran Ma | designwithai.co
+Creator: Xinran Ma
+More resources like this on: designwithai.co
 
-# idea-to-prototype — how to use
+# idea-to-prototype
 
 **What it is:** Turns a rough product idea into a structured design spec (markdown) ready to paste into a prototyping tool — Figma Make, v0, Stitch, Pencil, or similar. Bridges the gap between "I have an idea" and "I have something to show."
 
-## Install (one time)
+## When to use it
+
+- You have a product idea — even just one sentence — and want to turn it into a visual prototype quickly
+- You want a structured spec to paste into Figma Make, v0, Stitch, or Pencil and get clickable screens back
+- You're a designer or PM starting a new product and want to move from idea to prototype without writing a full PRD
+- You want to explore what a product could look like before committing to any design tool
+- You say things like "I want to build an app that...", "help me design...", or "I have an idea for..."
+
+## How to use it
+
+### Install (one time)
 
 ```bash
 git clone https://github.com/xinran-dwi/skills.git
@@ -13,21 +24,24 @@ mv skills/idea-to-prototype ~/.claude/skills/
 
 Restart Claude Code.
 
-## Use it
+### Step by step
 
-In Claude Code, type `/idea-to-prototype` or say — e.g.
+1. **Trigger the skill** — type `/idea-to-prototype` or describe your idea naturally:
+   - "I want to build an app that helps people track habits"
+   - "Help me design a mobile onboarding flow for a budgeting app"
+   - "I have an idea for a tool that connects freelancers with clients"
+   - "Create a design spec for a plant care reminder app"
 
-- "I want to build an app that helps people track habits"
-- "Help me design a mobile onboarding flow for a budgeting app"
-- "I have an idea for a tool that connects freelancers with clients"
-- "Create a design spec for a plant care reminder app"
+2. **Answer 3 short questions** — Claude asks one at a time:
+   - **Core objective:** What is the main goal of your product?
+   - **Target users:** Who is this for?
+   - **Platform:** Mobile, web, or desktop?
 
-## How it works
+3. **Claude writes the spec** — you get a structured markdown doc with: problem statement, key screens, user flows, and component notes
 
-1. Claude asks you 3 short questions: core objective, target users, and platform
-2. Based on your answers, it generates a structured design spec in markdown
-3. The spec includes: problem statement, key screens, user flows, and component notes
-4. Paste the spec directly into your preferred prototyping tool to generate a visual prototype
+4. **Paste into your prototyping tool** — copy the spec into Figma Make, v0, Stitch, or Pencil and generate clickable screens from it
+
+5. **Iterate** — refine the spec in conversation and re-paste to update the prototype
 
 ## Requirements
 

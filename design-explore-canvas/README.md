@@ -1,12 +1,23 @@
-Creator: Xinran Ma | designwithai.co
+Creator: Xinran Ma
+More resources like this on: designwithai.co
 
-_Disclaimer: It is a work-in-progress personal tool
+_Disclaimer: It is a work-in-progress personal tool_
 
-# design-explore-canvas — how to use
+# design-explore-canvas
 
-**What it is:** Generates 4 meaningfully distinct design directions from a single base design (screenshot, Figma URL, code file, or description), each with bullet-point rationale explaining the *why*. Outputs an interactive HTML viewer to compare options side by side, and appends every generation to a per-project visual canvas — like version control for design ideas.
+**What it is:** Generates 4 meaningfully distinct design directions from a single base design (screenshot, Figma URL, code file, or description), each with bullet-point rationale explaining the *why*. Appends every generation to a per-project visual canvas — like version control for design ideas — so you can scroll back, compare, and fork from any previous option.
 
-## Install (one time)
+## When to use it
+
+- You want to see multiple distinct visual directions for a UI, not pixel tweaks of the same idea
+- You have a base design (screenshot, Figma URL, code file, or a description) and want to explore what it could become
+- You want each option to come with a written rationale explaining *why* the design made those choices
+- You want to fork and iterate — reference any past option by its ID (e.g. "V2-Option3") and explore variations from there
+- You're early in ideation and want to pick a direction before committing to implementation
+
+## How to use it
+
+### Install (one time)
 
 ```bash
 git clone https://github.com/xinran-dwi/skills.git
@@ -15,23 +26,24 @@ mv skills/design-explore-canvas ~/.claude/skills/
 
 Restart Claude Code.
 
-## Use it
+### Step by step
 
-In Claude Code, type `/design-explore-canvas` or ask naturally — e.g.
+1. **Trigger the skill** — type `/design-explore-canvas` or ask naturally:
+   - "Give me 4 options for this header section"
+   - "Show me a few directions for this checkout screen"
+   - "What could this dashboard look like?"
+   - "Revise V2-Option3 with a softer feel"
+   - "Iterate on the minimalist one"
 
-- "Give me 4 options for this header section"
-- "Show me a few directions for this checkout screen"
-- "What could this dashboard look like?"
-- "Revise V2-Option3 with a softer feel"
-- "Iterate on the minimalist one"
+2. **Provide a base design** — paste a screenshot, share a Figma URL, point at a component file, or just describe it in words. The skill adapts to whatever you have.
 
-## How it works
+3. **Claude plans 4 distinct directions** — structurally different, not color tweaks. Each direction gets a short evocative name (e.g. "Editorial Calm", "Data Dense") and 4–7 rationale bullets written before any code.
 
-1. You provide a base design (screenshot, Figma URL, code file, or text description)
-2. Claude generates 4 distinct directions — structurally different, not just color tweaks
-3. Each direction comes with a rationale panel explaining the design decisions
-4. An interactive HTML viewer lets you toggle between options
-5. Every generation is saved to `explore-design-canvas/canvas.html` inside your project — scroll back through past explorations and fork from any previous option by referencing its ID (e.g. "V2-Option3")
+4. **The canvas updates** — in Next.js projects, open `localhost:3000/canvas` to see all options. In other projects, open `explore-design-canvas/canvas.html`.
+
+5. **Toggle and compare** — use the tab bar (or keys `1`–`5`) to switch between Base and the four options. The rationale panel updates per option.
+
+6. **Fork any option** — reference its ID in a follow-up: "revise V2-Option3 with a softer feel" and Claude forks a new generation from that point, preserving lineage.
 
 ## Requirements
 
