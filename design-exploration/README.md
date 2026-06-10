@@ -1,6 +1,6 @@
 Creator: Xinran Ma | designwithai.co
 
-_Disclaimer: It is a work-in-progress personal tool._
+_Disclaimer: It is a work-in-progress personal tool
 
 # design-exploration — how to use
 
