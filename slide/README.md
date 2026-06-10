@@ -1,4 +1,5 @@
-Creator: Xinran Ma | designwithai.co
+Creator: Xinran Ma
+Website: designwithai.co
 
 _Disclaimer: It is a work-in-progress personal tool
 
