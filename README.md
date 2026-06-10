@@ -14,6 +14,7 @@ Skills are modular instruction files that give Claude Code a focused capability 
 | [design-exploration](./design-exploration/) | `/design-exploration` | Structured design sprint for a UI section, grounded in a PRD and user research. Produces N explorations (each addressing a different research cluster) with a live toggle UI. |
 | [design-inspect](./design-inspect/) | `/design-inspect` | Click-to-edit overlay for your running Next.js app. Click any element, type a change, and Claude Code locates the exact JSX line and makes the edit. |
 | [find-skills](./find-skills/) | `/find-skills` | Search the open skills ecosystem for a skill that matches what you need. |
+| [handoff](./handoff/) | `/handoff` | Save and restore project context between sessions. Writes a `HANDOFF.md` with current work, failed approaches, next steps, and key files. Starts your dev server automatically on resume. |
 | [idea-to-prototype](./idea-to-prototype/) | `/idea-to-prototype` | Turn a rough product idea into a structured design spec ready to paste into a prototyping tool (Figma Make, v0, Stitch, etc.). |
 | [slide](./slide/) | `/slide` | Turn any content into a polished presentation deck — a single self-contained HTML file in a Modern Swiss Editorial style, with live font, color, and transition toggles. |
 
