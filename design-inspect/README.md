@@ -1,6 +1,6 @@
 Creator: Xinran Ma | designwithai.co
 
-_Disclaimer: Work-in-progress personal tool._
+_Disclaimer: Work-in-progress personal tool
 
 # design-inspect
 
