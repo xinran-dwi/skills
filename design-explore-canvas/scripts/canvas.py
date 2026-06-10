@@ -27,8 +27,9 @@ Data lives per-project at <project_root>/explore-design-canvas/:
 
 Templates live at ~/.claude/skills/design-explore-canvas/assets/.
 
-The `add` command prints a canvas_url like file:///<project_root>/explore-design-canvas/canvas.html#V<N>-Option1;
-the skill opens it so the canvas lands directly in the new generation's detail view.
+For Next.js projects the `add` command prints a canvas_url like http://localhost:3000/canvas#VN-Option1
+and scaffolds app/canvas/route.ts if it doesn't exist. For other projects it falls back to
+file:///<project_root>/explore-design-canvas/canvas.html#VN-Option1.
 """
 
 from __future__ import annotations
@@ -44,6 +45,22 @@ from pathlib import Path
 
 SKILL_DIR = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = SKILL_DIR / "assets"
+
+CANVAS_ROUTE_TEMPLATE = '''\
+import { promises as fs } from "fs";
+import path from "path";
+import { NextResponse } from "next/server";
+
+export async function GET() {
+  const html = await fs.readFile(
+    path.join(process.cwd(), "explore-design-canvas", "canvas.html"),
+    "utf-8"
+  );
+  return new NextResponse(html, {
+    headers: { "Content-Type": "text/html" },
+  });
+}
+'''
 
 
 def _project_root() -> Path:
@@ -65,6 +82,30 @@ CANVAS_DIR = _project_canvas_dir()
 DATA_PATH = CANVAS_DIR / "data.json"
 CANVAS_HTML = CANVAS_DIR / "canvas.html"
 ASSETS_DIR = CANVAS_DIR / "assets"
+
+
+# ---------- Next.js detection ----------
+
+def _is_nextjs_project() -> bool:
+    pkg = _project_root() / "package.json"
+    if not pkg.exists():
+        return False
+    try:
+        data = json.loads(pkg.read_text())
+        deps = {**data.get("dependencies", {}), **data.get("devDependencies", {})}
+        return "next" in deps
+    except Exception:
+        return False
+
+
+def _ensure_canvas_route() -> bool:
+    """Scaffold app/canvas/route.ts if it doesn't exist. Returns True if created."""
+    route_path = _project_root() / "app" / "canvas" / "route.ts"
+    if route_path.exists():
+        return False
+    route_path.parent.mkdir(parents=True, exist_ok=True)
+    route_path.write_text(CANVAS_ROUTE_TEMPLATE)
+    return True
 
 
 # ---------- data layer ----------
@@ -219,11 +260,22 @@ def cmd_add(args) -> int:
 
     canvas_path = write_canvas(data)
     first_variant = gen["variants"][0]["id"]
+
+    if _is_nextjs_project():
+        created = _ensure_canvas_route()
+        devserver = os.environ.get("CLAUDE_CANVAS_DEVSERVER", "http://localhost:3000")
+        canvas_url = f"{devserver}/canvas#{first_variant}"
+        extra = {"nextjs_route_created": created} if created else {}
+    else:
+        canvas_url = f"file://{canvas_path}#{first_variant}"
+        extra = {}
+
     print(json.dumps({
         "generation_id": gen_id,
         "canvas": str(canvas_path),
-        "canvas_url": f"file://{canvas_path}#{first_variant}",
+        "canvas_url": canvas_url,
         "variant_ids": [v["id"] for v in gen["variants"]],
+        **extra,
     }, indent=2))
     return 0
 
@@ -240,7 +292,13 @@ def cmd_render(args) -> int:
             base["rendered_src"] = rs[3:]
     save_data(data)
     canvas_path = write_canvas(data)
-    print(json.dumps({"canvas": str(canvas_path), "generations": len(data["generations"])}, indent=2))
+    if _is_nextjs_project():
+        _ensure_canvas_route()
+        devserver = os.environ.get("CLAUDE_CANVAS_DEVSERVER", "http://localhost:3000")
+        canvas_url = f"{devserver}/canvas"
+    else:
+        canvas_url = f"file://{canvas_path}"
+    print(json.dumps({"canvas": str(canvas_path), "canvas_url": canvas_url, "generations": len(data["generations"])}, indent=2))
     return 0
 
 

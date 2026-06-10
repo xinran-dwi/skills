@@ -221,11 +221,15 @@ Write the JSON to a temp file (e.g., `/tmp/design-gen.json`), then run:
 python3 ~/.claude/skills/design-explore-canvas/scripts/canvas.py add /tmp/design-gen.json
 ```
 
-The script prints a `canvas_url` of the form `file:///<project_root>/explore-design-canvas/canvas.html#VN-Option1` — that's a deep link that opens the canvas straight into the full-page detail view for the new generation, focused on Option 1. Open it for the user (the `file://` prefix is required for `open` to preserve the URL fragment):
+The script prints a `canvas_url`. For **Next.js projects** the URL is `http://localhost:3000/canvas#VN-Option1` — the script also scaffolds `app/canvas/route.ts` automatically if it doesn't exist yet. For non-Next.js projects it falls back to `file:///<project_root>/explore-design-canvas/canvas.html#VN-Option1`.
+
+Open it for the user:
 
 ```bash
 open '<canvas_url>'
 ```
+
+(For the `file://` fallback, the prefix is required for `open` to preserve the URL fragment.)
 
 Then tell the user, briefly:
 - The canvas is open in the full-page detail view of the new generation
