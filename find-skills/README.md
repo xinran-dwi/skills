@@ -1,4 +1,4 @@
-Creator: Vercel
+Creator: [Vercel](https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md)
 
 More resources like this on: designwithai.co
 
