@@ -1,4 +1,4 @@
-Creator: Xinran Ma
+Creator: Vercel
 
 More resources like this on: designwithai.co
 
