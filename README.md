@@ -8,15 +8,16 @@ Skills are modular instruction files that give Claude Code a focused capability 
 
 ## Skills
 
-| Skill | Command | What it does |
-|-------|---------|--------------|
-| [design-explore-canvas](./design-explore-canvas/) | `/design-explore-canvas` | Generate 4 distinct design directions from a base design (screenshot, Figma URL, or description). Interactive HTML viewer with rationale + a per-project canvas to track all explorations over time. |
-| [design-exploration](./design-exploration/) | `/design-exploration` | Structured design sprint for a UI section, grounded in a PRD and user research. Produces N explorations (each addressing a different research cluster) with a live toggle UI. |
-| [design-inspect](./design-inspect/) | `/design-inspect` | Click-to-edit overlay for your running Next.js app. Click any element, type a change, and Claude Code locates the exact JSX line and makes the edit. |
-| [find-skills](./find-skills/) | `/find-skills` | Search the open skills ecosystem for a skill that matches what you need. |
-| [handoff](./handoff/) | `/handoff` | Save and restore project context between sessions. Writes a `HANDOFF.md` with current work, failed approaches, next steps, and key files. Starts your dev server automatically on resume. |
-| [idea-to-prototype](./idea-to-prototype/) | `/idea-to-prototype` | Turn a rough product idea into a structured design spec ready to paste into a prototyping tool (Figma Make, v0, Stitch, etc.). |
-| [slide](./slide/) | `/slide` | Turn any content into a polished presentation deck — a single self-contained HTML file in a Modern Swiss Editorial style, with live font, color, and transition toggles. |
+| Skill | Command | When to use | What it does |
+|-------|---------|-------------|--------------|
+| [claude-code-status-line-setup](./claude-code-status-line-setup/) | `/claude-code-status-line-setup` | Setting up the Claude Code footer | Install a 4-line footer showing context window %, git branch, active model, and live 5h/7d plan usage bars with reset times. Runs once; works on macOS, Linux, and Windows. |
+| [design-explore-canvas](./design-explore-canvas/) | `/design-explore-canvas` | Exploring visual directions | Generate 4 distinct design directions from a base design (screenshot, Figma URL, or description). Interactive HTML viewer with rationale + a per-project canvas to track all explorations over time. |
+| [design-exploration](./design-exploration/) | `/design-exploration` | Running a research-grounded design sprint | Structured design sprint for a UI section, grounded in a PRD and user research. Produces N explorations (each addressing a different research cluster) with a live toggle UI. |
+| [design-inspect](./design-inspect/) | `/design-inspect` | Clicking an element to edit it | Click-to-edit overlay for your running Next.js app. Click any element, type a change, and Claude Code locates the exact JSX line and makes the edit. |
+| [find-skills](./find-skills/) | `/find-skills` | Finding a skill that does X | Search the open skills ecosystem for a skill that matches what you need. |
+| [handoff](./handoff/) | `/handoff` | Wrapping up or resuming a session | Save and restore project context between sessions. Writes a `HANDOFF.md` with current work, failed approaches, next steps, and key files. Starts your dev server automatically on resume. |
+| [idea-to-prototype](./idea-to-prototype/) | `/idea-to-prototype` | Turning an idea into a prototype spec | Turn a rough product idea into a structured design spec ready to paste into a prototyping tool (Figma Make, v0, Stitch, etc.). |
+| [slide](./slide/) | `/slide` | Turning content into a presentation | Turn any content into a polished presentation deck — a single self-contained HTML file in a Modern Swiss Editorial style, with live font, color, and transition toggles. |
 
 ## Installation
 
