@@ -19,9 +19,7 @@ Skills are modular instruction files that give Claude Code a focused capability 
 | [github-readme](./github-readme/) | `/github-readme` | Documenting a new skill | Write a README.md for a Claude Code skill in Xinran's standard format — creator header, What it is, When to use it, and step-by-step How to use it sections. |
 | [handoff](./handoff/) | `/handoff` | Wrapping up or resuming a session | Save and restore project context between sessions. Writes a `HANDOFF.md` with current work, failed approaches, next steps, and key files. Starts your dev server automatically on resume. |
 | [idea-to-prototype](./idea-to-prototype/) | `/idea-to-prototype` | Turning an idea into a prototype spec | Turn a rough product idea into a structured design spec ready to paste into a prototyping tool (Figma Make, v0, Stitch, etc.). |
-| [seo-description](./seo-description/) | `/seo-description` | Writing SEO meta descriptions for newsletter articles | Generate 3 meta description options (140–160 characters) in distinct angles — outcome, problem, curiosity — then write the chosen one to a `.seo.md` file alongside the article. |
 | [slide](./slide/) | `/slide` | Turning content into a presentation | Turn any content into a polished presentation deck — a single self-contained HTML file in a Modern Swiss Editorial style, with live font, color, and transition toggles. |
-| [stitch-brainstorm](./stitch-brainstorm/) | `/stitch-brainstorm` | Exploring visual design directions early in ideation | One clarifying question, then generates a starting screen in Stitch followed by 3–5 visual variants to compare and react to. |
 
 ## Installation
 
