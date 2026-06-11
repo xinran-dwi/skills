@@ -39,9 +39,11 @@ Restart Claude Code.
 
 3. **Results are presented** — you see the skill name, what it does, install count, and the install command
 
-4. **Install if it looks good** — run `npx skills add <package>` to install the skill globally
+4. **Read before you install** — skills are created by the community, so always read the skill description and its `SKILL.md` before installing. Don't install blindly — check what it does and whether it matches what you need.
 
-5. **Use it immediately** — restart Claude Code and the skill is available as a slash command
+5. **Install if it looks good** — run `npx skills add <package>` to install the skill globally
+
+6. **Use it immediately** — restart Claude Code and the skill is available as a slash command
 
 ## Requirements
 
