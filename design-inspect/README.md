@@ -6,6 +6,8 @@ _Disclaimer: Work-in-progress personal tool_
 
 # design-inspect
 
+![design-inspect demo](./demo.gif)
+
 ## What it is
 
 Click any element in your running app, type what you want changed, and Claude Code finds the exact line and edits it — no describing elements in words, no hunting for the right file.
