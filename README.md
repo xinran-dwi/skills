@@ -1,10 +1,10 @@
-# Claude Code Skills
+# Claude Skills
 
 A collection of custom skills (slash commands) for [Claude Code](https://claude.ai/code). Each skill is a specialized workflow that extends what Claude Code can do.
 
 ## What are skills?
 
-Skills are modular instruction files that give Claude Code a focused capability — like running a design sprint, building a presentation deck, or generating design explorations. Install a skill once and invoke it with a slash command.
+Skills are modular instruction files that give Claude Code a focused capability, just like a receipe or mini playbook that you can reuse. It helps for repeatable workflows.
 
 ## Skills
 
