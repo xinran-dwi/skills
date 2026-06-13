@@ -19,6 +19,7 @@
  * dev metadata, which is stripped from production builds).
  */
 (() => {
+  if (window.self !== window.top) return; // don't inject inside iframes (e.g. canvas embeds)
   if (window.__designInspectActive) {
     console.log("[design-inspect] already loaded; toggling inspect.");
     window.__designInspectToggle && window.__designInspectToggle();
@@ -301,7 +302,7 @@
 
     range.deleteContents();
     range.insertNode(chip);
-    const space = document.createTextNode(" ");
+    const space = document.createTextNode(" ");
     chip.after(space);
 
     const after = document.createRange();
@@ -401,7 +402,7 @@
 
   function serialize(node, parts) {
     if (node.nodeType === Node.TEXT_NODE) {
-      parts.push(node.textContent.replace(/ /g, " "));
+      parts.push(node.textContent.replace(/ /g, " "));
       return;
     }
     if (node.nodeType !== Node.ELEMENT_NODE) return;

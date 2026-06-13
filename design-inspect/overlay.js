@@ -8,6 +8,7 @@
  * dev metadata, which is stripped from production builds).
  */
 (() => {
+  if (window.self !== window.top) return; // don't inject inside iframes (e.g. canvas embeds)
   if (window.__designInspectActive) {
     console.log("[design-inspect] already loaded; toggling inspect.");
     window.__designInspectToggle && window.__designInspectToggle();
