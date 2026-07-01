@@ -8,12 +8,21 @@ More resources like this on: designwithai.co
 
 A one-time setup skill that installs a custom 4-line footer in Claude Code. The footer shows your current folder, git branch, active model, context window usage, and live 5-hour and 7-day plan limits with exact reset times — all pulled from Anthropic's usage API and cached locally so it stays fast.
 
-## When to use it
+## What the footer looks like
 
-- You want to see your Claude plan usage at a glance without opening a browser
+```
+📂 my-project  |  🌿 Branch: main (2)  |  ★ Claude Sonnet 4.5
+Context: ████████░░░░░░░  52%
+5h: ██████░░░░  61%  resets 1:00 am
+7d: ███░░░░░░░  32%  resets jun 18, 5:00 pm
+```
+
+## How to use it
+
+- You can see your Claude plan usage at a glance without opening a browser
 - You're hitting rate limits and want to know exactly when your quota resets
-- You want your context window percentage always visible in the footer
-- You want the current git branch and model name in the status bar without switching windows
+- You get your context window percentage always visible in the footer
+- You can see the current git branch and model name in the status bar without switching windows
 - You're setting up a new machine and want to replicate your Claude Code footer
 
 ## How to use it
@@ -39,14 +48,6 @@ Restart Claude Code.
 
 5. **Restart Claude Code** — The 4-line footer appears immediately on next launch
 
-## What the footer looks like
-
-```
-📂 my-project  |  🌿 Branch: main (2)  |  ★ Claude Sonnet 4.5
-Context: ████████░░░░░░░  52%
-5h: ██████░░░░  61%  resets 1:00 am
-7d: ███░░░░░░░  32%  resets jun 18, 5:00 pm
-```
 
 ## Requirements
 
