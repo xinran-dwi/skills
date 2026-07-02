@@ -40,7 +40,7 @@ Restart Claude Code.
 
 1. Type `/handoff` (or say "save handoff", "wrap up")
 2. Claude writes `./HANDOFF.md` in your project root with: what's being built, approaches tried (including failures), next steps, key file paths, and open questions
-3. Commit it to git so it travels with the project
+3. *(Optional) Commit it to git if you want it to sync across machines or share with teammates.*
 
 **At the start of a session — resume from file:**
 
