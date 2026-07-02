@@ -17,7 +17,7 @@ Context: ████████░░░░░░░  52%
 7d: ███░░░░░░░  32%  resets jun 18, 5:00 pm
 ```
 
-## How to use it
+## When to use it
 
 - You can see your Claude plan usage at a glance without opening a browser
 - You're hitting rate limits and want to know exactly when your quota resets
@@ -30,8 +30,9 @@ Context: ████████░░░░░░░  52%
 ### Install (one time)
 
 ```bash
-git clone https://github.com/xinran-dwi/skills.git
-mv skills/claude-code-status-line-setup ~/.claude/skills/
+git clone https://github.com/xinran-dwi/skills.git /tmp/xinran-skills
+mkdir -p ~/.claude/skills
+mv /tmp/xinran-skills/claude-code-status-line-setup ~/.claude/skills/
 ```
 
 Restart Claude Code.
