@@ -20,10 +20,16 @@ A Claude Code skill that converts any Figma frame into a fully working Next.js +
 
 ### Install (one time)
 
+**macOS / Linux**
 ```bash
-git clone https://github.com/xinran-dwi/skills.git /tmp/xinran-skills
-mkdir -p ~/.claude/skills
-mv /tmp/xinran-skills/figma-to-claude-code ~/.claude/skills/
+mkdir -p ~/.claude/skills/figma-to-claude-code
+curl -fsSL https://raw.githubusercontent.com/xinran-dwi/skills/main/figma-to-claude-code/SKILL.md -o ~/.claude/skills/figma-to-claude-code/SKILL.md
+```
+
+**Windows (PowerShell)**
+```powershell
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\skills\figma-to-claude-code"
+Invoke-WebRequest "https://raw.githubusercontent.com/xinran-dwi/skills/main/figma-to-claude-code/SKILL.md" -OutFile "$env:USERPROFILE\.claude\skills\figma-to-claude-code\SKILL.md"
 ```
 
 Restart Claude Code.

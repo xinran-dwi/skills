@@ -22,10 +22,16 @@ Generates 4 meaningfully distinct design directions from a single base design (s
 
 ### Install (one time)
 
+**macOS / Linux**
 ```bash
-git clone https://github.com/xinran-dwi/skills.git /tmp/xinran-skills
-mkdir -p ~/.claude/skills
-mv /tmp/xinran-skills/design-explore-canvas ~/.claude/skills/
+mkdir -p ~/.claude/skills/design-explore-canvas
+curl -fsSL https://raw.githubusercontent.com/xinran-dwi/skills/main/design-explore-canvas/SKILL.md -o ~/.claude/skills/design-explore-canvas/SKILL.md
+```
+
+**Windows (PowerShell)**
+```powershell
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\skills\design-explore-canvas"
+Invoke-WebRequest "https://raw.githubusercontent.com/xinran-dwi/skills/main/design-explore-canvas/SKILL.md" -OutFile "$env:USERPROFILE\.claude\skills\design-explore-canvas\SKILL.md"
 ```
 
 Restart Claude Code.

@@ -20,10 +20,16 @@ _Disclaimer: Work-in-progress personal tool_
 
 ### Install (one time)
 
+**macOS / Linux**
 ```bash
-git clone https://github.com/xinran-dwi/skills.git /tmp/xinran-skills
-mkdir -p ~/.claude/skills
-mv /tmp/xinran-skills/handoff ~/.claude/skills/
+mkdir -p ~/.claude/skills/handoff
+curl -fsSL https://raw.githubusercontent.com/xinran-dwi/skills/main/handoff/SKILL.md -o ~/.claude/skills/handoff/SKILL.md
+```
+
+**Windows (PowerShell)**
+```powershell
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\skills\handoff"
+Invoke-WebRequest "https://raw.githubusercontent.com/xinran-dwi/skills/main/handoff/SKILL.md" -OutFile "$env:USERPROFILE\.claude\skills\handoff\SKILL.md"
 ```
 
 Restart Claude Code.

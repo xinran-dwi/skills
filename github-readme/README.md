@@ -20,10 +20,16 @@ Writes a `README.md` for a new Claude Code skill using the standard format estab
 
 ### Install (one time)
 
+**macOS / Linux**
 ```bash
-git clone https://github.com/xinran-dwi/skills.git /tmp/xinran-skills
-mkdir -p ~/.claude/skills
-mv /tmp/xinran-skills/github-readme ~/.claude/skills/
+mkdir -p ~/.claude/skills/github-readme
+curl -fsSL https://raw.githubusercontent.com/xinran-dwi/skills/main/github-readme/SKILL.md -o ~/.claude/skills/github-readme/SKILL.md
+```
+
+**Windows (PowerShell)**
+```powershell
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\skills\github-readme"
+Invoke-WebRequest "https://raw.githubusercontent.com/xinran-dwi/skills/main/github-readme/SKILL.md" -OutFile "$env:USERPROFILE\.claude\skills\github-readme\SKILL.md"
 ```
 
 Restart Claude Code.

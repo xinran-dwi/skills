@@ -20,10 +20,16 @@ Turns a rough product idea into a structured design spec (markdown) ready to pas
 
 ### Install (one time)
 
+**macOS / Linux**
 ```bash
-git clone https://github.com/xinran-dwi/skills.git /tmp/xinran-skills
-mkdir -p ~/.claude/skills
-mv /tmp/xinran-skills/idea-to-prototype ~/.claude/skills/
+mkdir -p ~/.claude/skills/idea-to-prototype
+curl -fsSL https://raw.githubusercontent.com/xinran-dwi/skills/main/idea-to-prototype/SKILL.md -o ~/.claude/skills/idea-to-prototype/SKILL.md
+```
+
+**Windows (PowerShell)**
+```powershell
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\skills\idea-to-prototype"
+Invoke-WebRequest "https://raw.githubusercontent.com/xinran-dwi/skills/main/idea-to-prototype/SKILL.md" -OutFile "$env:USERPROFILE\.claude\skills\idea-to-prototype\SKILL.md"
 ```
 
 Restart Claude Code.

@@ -22,10 +22,16 @@ Turns notes, outlines, or articles into a polished HTML presentation deck in a "
 
 ### Install (one time)
 
+**macOS / Linux**
 ```bash
-git clone https://github.com/xinran-dwi/skills.git /tmp/xinran-skills
-mkdir -p ~/.claude/skills
-mv /tmp/xinran-skills/slide ~/.claude/skills/
+mkdir -p ~/.claude/skills/slide
+curl -fsSL https://raw.githubusercontent.com/xinran-dwi/skills/main/slide/SKILL.md -o ~/.claude/skills/slide/SKILL.md
+```
+
+**Windows (PowerShell)**
+```powershell
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\skills\slide"
+Invoke-WebRequest "https://raw.githubusercontent.com/xinran-dwi/skills/main/slide/SKILL.md" -OutFile "$env:USERPROFILE\.claude\skills\slide\SKILL.md"
 ```
 
 Restart Claude Code.

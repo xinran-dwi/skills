@@ -29,10 +29,16 @@ Context: ████████░░░░░░░  52%
 
 ### Install (one time)
 
+**macOS / Linux**
 ```bash
-git clone https://github.com/xinran-dwi/skills.git /tmp/xinran-skills
-mkdir -p ~/.claude/skills
-mv /tmp/xinran-skills/claude-code-status-line-setup ~/.claude/skills/
+mkdir -p ~/.claude/skills/claude-code-status-line-setup
+curl -fsSL https://raw.githubusercontent.com/xinran-dwi/skills/main/claude-code-status-line-setup/SKILL.md -o ~/.claude/skills/claude-code-status-line-setup/SKILL.md
+```
+
+**Windows (PowerShell)**
+```powershell
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\skills\claude-code-status-line-setup"
+Invoke-WebRequest "https://raw.githubusercontent.com/xinran-dwi/skills/main/claude-code-status-line-setup/SKILL.md" -OutFile "$env:USERPROFILE\.claude\skills\claude-code-status-line-setup\SKILL.md"
 ```
 
 Restart Claude Code.

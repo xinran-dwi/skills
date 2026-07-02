@@ -24,10 +24,16 @@ Click any element in your running app, type what you want changed, and Claude Co
 
 ### Install (one time)
 
+**macOS / Linux**
 ```bash
-git clone https://github.com/xinran-dwi/skills.git /tmp/xinran-skills
-mkdir -p ~/.claude/skills
-mv /tmp/xinran-skills/design-inspect ~/.claude/skills/
+mkdir -p ~/.claude/skills/design-inspect
+curl -fsSL https://raw.githubusercontent.com/xinran-dwi/skills/main/design-inspect/SKILL.md -o ~/.claude/skills/design-inspect/SKILL.md
+```
+
+**Windows (PowerShell)**
+```powershell
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\skills\design-inspect"
+Invoke-WebRequest "https://raw.githubusercontent.com/xinran-dwi/skills/main/design-inspect/SKILL.md" -OutFile "$env:USERPROFILE\.claude\skills\design-inspect\SKILL.md"
 ```
 
 Restart Claude Code.

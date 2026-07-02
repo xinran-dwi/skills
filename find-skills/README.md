@@ -20,10 +20,16 @@ Searches the open skills ecosystem ([skills.sh](https://skills.sh/)) to find a C
 
 ### Install (one time)
 
+**macOS / Linux**
 ```bash
-git clone https://github.com/xinran-dwi/skills.git /tmp/xinran-skills
-mkdir -p ~/.claude/skills
-mv /tmp/xinran-skills/find-skills ~/.claude/skills/
+mkdir -p ~/.claude/skills/find-skills
+curl -fsSL https://raw.githubusercontent.com/xinran-dwi/skills/main/find-skills/SKILL.md -o ~/.claude/skills/find-skills/SKILL.md
+```
+
+**Windows (PowerShell)**
+```powershell
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\skills\find-skills"
+Invoke-WebRequest "https://raw.githubusercontent.com/xinran-dwi/skills/main/find-skills/SKILL.md" -OutFile "$env:USERPROFILE\.claude\skills\find-skills\SKILL.md"
 ```
 
 Restart Claude Code.

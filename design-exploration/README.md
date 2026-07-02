@@ -22,10 +22,16 @@ Runs a structured design sprint for a specific UI section, grounded in a PRD and
 
 ### Install (one time)
 
+**macOS / Linux**
 ```bash
-git clone https://github.com/xinran-dwi/skills.git /tmp/xinran-skills
-mkdir -p ~/.claude/skills
-mv /tmp/xinran-skills/design-exploration ~/.claude/skills/
+mkdir -p ~/.claude/skills/design-exploration
+curl -fsSL https://raw.githubusercontent.com/xinran-dwi/skills/main/design-exploration/SKILL.md -o ~/.claude/skills/design-exploration/SKILL.md
+```
+
+**Windows (PowerShell)**
+```powershell
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\skills\design-exploration"
+Invoke-WebRequest "https://raw.githubusercontent.com/xinran-dwi/skills/main/design-exploration/SKILL.md" -OutFile "$env:USERPROFILE\.claude\skills\design-exploration\SKILL.md"
 ```
 
 Restart Claude Code.
