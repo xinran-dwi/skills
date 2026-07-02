@@ -12,7 +12,8 @@ description: >-
   draws the lines in", "a looping motion graphic from my diagrams". The real
   per-element draw-on effect needs vector SVG scenes; flat PNGs can only fade as
   whole pictures. This outputs the animated HTML to record — it does not itself
-  render a finished MP4/GIF (that needs a browser to capture).
+  render a finished MP4/GIF (that needs a browser to capture). Also triggers
+  on /images-to-video.
 ---
 
 # Images to Video (animated HTML trailer)
