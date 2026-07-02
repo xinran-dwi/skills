@@ -8,6 +8,8 @@ More resources like this on: designwithai.co
 
 Turns a set of SVG diagrams (or flat images) into a self-playing, looping animated HTML trailer — each element draws, fades, or pops in individually, then the scene cuts to the next. The output is one standalone `.html` file you open in a browser and screen-record to get a video or GIF. Pairs directly with the `newsletter-diagram` skill, which produces the monochrome SVG diagrams that are the ideal scene source.
 
+![preview](assets/preview.gif)
+
 ## When to use it
 
 - You have diagrams (especially from `newsletter-diagram`) and want to turn them into an animated reel or teaser
