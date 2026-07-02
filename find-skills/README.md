@@ -21,8 +21,9 @@ Searches the open skills ecosystem ([skills.sh](https://skills.sh/)) to find a C
 ### Install (one time)
 
 ```bash
-git clone https://github.com/xinran-dwi/skills.git
-mv skills/find-skills ~/.claude/skills/
+git clone https://github.com/xinran-dwi/skills.git /tmp/xinran-skills
+mkdir -p ~/.claude/skills
+mv /tmp/xinran-skills/find-skills ~/.claude/skills/
 ```
 
 Restart Claude Code.

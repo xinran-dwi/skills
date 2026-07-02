@@ -21,8 +21,9 @@ A Claude Code skill that converts any Figma frame into a fully working Next.js +
 ### Install (one time)
 
 ```bash
-git clone https://github.com/xinran-dwi/skills.git
-mv skills/figma-to-claude-code ~/.claude/skills/
+git clone https://github.com/xinran-dwi/skills.git /tmp/xinran-skills
+mkdir -p ~/.claude/skills
+mv /tmp/xinran-skills/figma-to-claude-code ~/.claude/skills/
 ```
 
 Restart Claude Code.

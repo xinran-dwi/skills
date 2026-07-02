@@ -23,8 +23,9 @@ Runs a structured design sprint for a specific UI section, grounded in a PRD and
 ### Install (one time)
 
 ```bash
-git clone https://github.com/xinran-dwi/skills.git
-mv skills/design-exploration ~/.claude/skills/
+git clone https://github.com/xinran-dwi/skills.git /tmp/xinran-skills
+mkdir -p ~/.claude/skills
+mv /tmp/xinran-skills/design-exploration ~/.claude/skills/
 ```
 
 Restart Claude Code.

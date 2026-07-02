@@ -21,8 +21,9 @@ _Disclaimer: Work-in-progress personal tool_
 ### Install (one time)
 
 ```bash
-git clone https://github.com/xinran-dwi/skills.git
-mv skills/handoff ~/.claude/skills/
+git clone https://github.com/xinran-dwi/skills.git /tmp/xinran-skills
+mkdir -p ~/.claude/skills
+mv /tmp/xinran-skills/handoff ~/.claude/skills/
 ```
 
 Restart Claude Code.

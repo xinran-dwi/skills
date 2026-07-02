@@ -25,8 +25,9 @@ Click any element in your running app, type what you want changed, and Claude Co
 ### Install (one time)
 
 ```bash
-git clone https://github.com/xinran-dwi/skills.git
-mv skills/design-inspect ~/.claude/skills/
+git clone https://github.com/xinran-dwi/skills.git /tmp/xinran-skills
+mkdir -p ~/.claude/skills
+mv /tmp/xinran-skills/design-inspect ~/.claude/skills/
 ```
 
 Restart Claude Code.

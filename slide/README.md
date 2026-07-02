@@ -23,8 +23,9 @@ Turns notes, outlines, or articles into a polished HTML presentation deck in a "
 ### Install (one time)
 
 ```bash
-git clone https://github.com/xinran-dwi/skills.git
-mv skills/slide ~/.claude/skills/
+git clone https://github.com/xinran-dwi/skills.git /tmp/xinran-skills
+mkdir -p ~/.claude/skills
+mv /tmp/xinran-skills/slide ~/.claude/skills/
 ```
 
 Restart Claude Code.

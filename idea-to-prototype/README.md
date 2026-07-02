@@ -21,8 +21,9 @@ Turns a rough product idea into a structured design spec (markdown) ready to pas
 ### Install (one time)
 
 ```bash
-git clone https://github.com/xinran-dwi/skills.git
-mv skills/idea-to-prototype ~/.claude/skills/
+git clone https://github.com/xinran-dwi/skills.git /tmp/xinran-skills
+mkdir -p ~/.claude/skills
+mv /tmp/xinran-skills/idea-to-prototype ~/.claude/skills/
 ```
 
 Restart Claude Code.

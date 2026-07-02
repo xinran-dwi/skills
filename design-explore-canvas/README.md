@@ -23,8 +23,9 @@ Generates 4 meaningfully distinct design directions from a single base design (s
 ### Install (one time)
 
 ```bash
-git clone https://github.com/xinran-dwi/skills.git
-mv skills/design-explore-canvas ~/.claude/skills/
+git clone https://github.com/xinran-dwi/skills.git /tmp/xinran-skills
+mkdir -p ~/.claude/skills
+mv /tmp/xinran-skills/design-explore-canvas ~/.claude/skills/
 ```
 
 Restart Claude Code.

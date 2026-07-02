@@ -21,8 +21,9 @@ Writes a `README.md` for a new Claude Code skill using the standard format estab
 ### Install (one time)
 
 ```bash
-git clone https://github.com/xinran-dwi/skills.git
-mv skills/github-readme ~/.claude/skills/
+git clone https://github.com/xinran-dwi/skills.git /tmp/xinran-skills
+mkdir -p ~/.claude/skills
+mv /tmp/xinran-skills/github-readme ~/.claude/skills/
 ```
 
 Restart Claude Code.
