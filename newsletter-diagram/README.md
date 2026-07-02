@@ -8,7 +8,7 @@ More resources like this on: designwithai.co
 
 Turns any diagram request into a clean, intentional-looking PNG — monochrome hairline strokes, monospace lowercase labels, near-square corners, and generous whitespace. The opposite of the colorful pastel-pill "generated" look. Great for newsletters, slides, docs, READMEs, and Figma.
 
-![preview](assets/preview.png)
+![preview](assets/preview.jpg)
 
 ## When to use it
 
