@@ -12,7 +12,8 @@ description: >-
   they can drop into a newsletter, slides, doc, or Figma — even if they only say
   "make it a png", "minimalist diagram", "monospace diagram", "for my
   newsletter", "the same diagram style", or "downloadable image". Prefer this
-  over inline HTML/SVG widgets any time a saved image file is wanted.
+  over inline HTML/SVG widgets any time a saved image file is wanted. Also
+  triggers on /newsletter-diagram.
 ---
 
 # Newsletter Diagram
