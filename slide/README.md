@@ -6,6 +6,8 @@ _Disclaimer: It is a work-in-progress personal tool_
 
 # slide
 
+![slide demo](./demo.gif)
+
 ## What it is
 
 Turns notes, outlines, or articles into a polished HTML presentation deck in a "Modern Swiss Editorial" style — serif display headlines, grotesque sans body, disciplined grid, generous whitespace. Ships with live keyboard controls to cycle fonts, colors, and slide transitions in the browser.
