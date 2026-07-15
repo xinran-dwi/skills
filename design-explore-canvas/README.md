@@ -6,7 +6,7 @@ _Disclaimer: It is a work-in-progress personal tool_
 
 # design-explore-canvas
 
-<video src="https://raw.githubusercontent.com/xinran-dwi/skills/main/design-explore-canvas/assets/demo_designcanvas-small.mp4" autoplay loop muted playsinline width="100%"></video>
+![design-explore-canvas demo](./assets/demo_designcanvas.gif)
 
 ## What it is
 
