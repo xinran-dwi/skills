@@ -6,6 +6,8 @@ _Disclaimer: It is a work-in-progress personal tool_
 
 # design-exploration
 
+![design-exploration demo](./demo.gif)
+
 ## What it is
 
 Runs a structured design sprint for a specific UI section, grounded in a PRD and user research. Produces N explorations — each addressing a *different* cluster of research findings, not just visual tweaks — and renders them in a live toggle UI with the full page context visible.
