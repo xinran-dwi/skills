@@ -1,0 +1,131 @@
+{
+  "skill_name": "design-sandbox-setup",
+  "evals": [
+    {
+      "id": 0,
+      "eval_name": "untitledui-real-repo",
+      "prompt": "I want to build a design sandbox so I can prototype UI using our real design system without touching the production app. Our design system is Untitled UI React, vendored locally as the `@repo/ui` package at {{MONOREPO_DIR}}/packages/ui. Our production app is at {{MONOREPO_DIR}}/apps/main-app -- please recreate the Customers screen (apps/main-app/src/app/customers-page.tsx) as the first real screen in the sandbox. Set the whole sandbox up in this folder: {{TARGET_DIR}}. Treat the production app and design system source as READ-ONLY reference -- do not create, edit, or delete anything outside {{TARGET_DIR}}.",
+      "expected_output": "A sandbox app scaffolded inside {{TARGET_DIR}} using real @repo/ui components (installed or copied, not reinvented). A COMPONENTS.md index table (Component/Import/Use for/Wrong move -> right move) covering the design system's most-used components. A CLAUDE.md rules file with the 'check COMPONENTS.md and real source, else stop and ask' rule with real, filled-in file paths. A recreated Customers screen using fake data, with no data-fetching/auth/permission code copied over. Nothing written outside {{TARGET_DIR}}.",
+      "files": [],
+      "assertions": [
+        {
+          "text": "A sandbox app exists at outputs/sandbox with a package.json",
+          "check": "file_exists",
+          "path": "sandbox/package.json"
+        },
+        {
+          "text": "COMPONENTS.md exists at the sandbox root",
+          "check": "file_exists",
+          "path": "sandbox/COMPONENTS.md"
+        },
+        {
+          "text": "COMPONENTS.md contains the 4-column table (Component / Import / Use for / Wrong move -> right move)",
+          "check": "file_contains_all",
+          "path": "sandbox/COMPONENTS.md",
+          "patterns": [
+            "Component",
+            "Import",
+            "Use for",
+            "Wrong move"
+          ]
+        },
+        {
+          "text": "CLAUDE.md exists at the sandbox root",
+          "check": "file_exists",
+          "path": "sandbox/CLAUDE.md"
+        },
+        {
+          "text": "CLAUDE.md has no leftover bracket placeholders like [design system] or [path]",
+          "check": "file_not_contains_regex",
+          "path": "sandbox/CLAUDE.md",
+          "pattern": "\\[(design system|path|package name|screen name)\\]"
+        },
+        {
+          "text": "The recreated screen references real Customer data/columns (name/domain/status)",
+          "check": "any_file_contains",
+          "glob": "sandbox/**/*.{tsx,jsx,ts,js}",
+          "patterns": [
+            "Customer",
+            "domain"
+          ]
+        },
+        {
+          "text": "The recreated screen imports from the real design system rather than reinventing components",
+          "check": "any_file_contains",
+          "glob": "sandbox/**/*.{tsx,jsx,ts,js}",
+          "patterns": [
+            "@repo/ui"
+          ]
+        },
+        {
+          "text": "Nothing was written/modified outside the sandbox folder (production repo untouched)",
+          "check": "git_clean",
+          "repo_path": "{{MONOREPO_DIR}}"
+        },
+        {
+          "text": "No real data-fetching/auth code was copied into the recreated screen",
+          "check": "any_file_not_contains",
+          "glob": "sandbox/**/*.{tsx,jsx,ts,js}",
+          "patterns": [
+            "supabase",
+            "prisma",
+            "getSession",
+            "cookies()"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "eval_name": "fresh-shadcn-no-source-app",
+      "prompt": "Set up a design sandbox using shadcn/ui (https://ui.shadcn.com) in this folder: {{TARGET_DIR}}. We don't have an existing app to pull a screen from yet -- as the first real screen, build a simple Account Settings screen with a form (name field, email field) and a Save button, using real shadcn/ui components.",
+      "expected_output": "A fresh Vite (or similarly minimal) React app scaffolded in {{TARGET_DIR}} with shadcn/ui installed via its CLI and verified with a default-styled component. A COMPONENTS.md index for shadcn/ui's components. A CLAUDE.md rules file with real paths filled in. An Account Settings screen built from the description (no source app existed) using real shadcn/ui form/input/button components, not hand-rolled lookalikes, with fake/no backend logic.",
+      "files": [],
+      "assertions": [
+        {
+          "text": "A sandbox app exists at outputs/sandbox with a package.json",
+          "check": "file_exists",
+          "path": "sandbox/package.json"
+        },
+        {
+          "text": "shadcn/ui is actually installed (components.json config present)",
+          "check": "file_exists",
+          "path": "sandbox/components.json"
+        },
+        {
+          "text": "COMPONENTS.md exists at the sandbox root",
+          "check": "file_exists",
+          "path": "sandbox/COMPONENTS.md"
+        },
+        {
+          "text": "CLAUDE.md exists at the sandbox root",
+          "check": "file_exists",
+          "path": "sandbox/CLAUDE.md"
+        },
+        {
+          "text": "CLAUDE.md has no leftover bracket placeholders",
+          "check": "file_not_contains_regex",
+          "path": "sandbox/CLAUDE.md",
+          "pattern": "\\[(design system|path|package name|screen name)\\]"
+        },
+        {
+          "text": "An Account Settings screen exists with name/email fields and a Save action",
+          "check": "any_file_contains",
+          "glob": "sandbox/**/*.{tsx,jsx,ts,js}",
+          "patterns": [
+            "email",
+            "Save"
+          ]
+        },
+        {
+          "text": "The screen imports real shadcn/ui components rather than hand-rolled lookalikes",
+          "check": "any_file_contains",
+          "glob": "sandbox/**/*.{tsx,jsx,ts,js}",
+          "patterns": [
+            "components/ui/"
+          ]
+        }
+      ]
+    }
+  ]
+}
