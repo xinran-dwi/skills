@@ -5,18 +5,26 @@ description: Set up a workflow for running Claude Code on several projects at on
 
 # Running Claude Code on several projects at once
 
-Everything here is **built into Claude Code**. Nothing gets installed, no scripts, no
-config files to maintain. The whole workflow is three things:
+Most of this is **built into Claude Code** — the dashboard and Remote Control need nothing
+installed. The whole workflow is three things:
 
 ```
 claude agents         one dashboard for every project
-/config  (once)       get told when a session needs you or finishes
+hooks (once)          get told when a session needs you or finishes — actually works
 /rc      (per window) put this session on your phone
 ```
 
-None of it is per-project. The notification settings are user-level, so they apply to every
-project you ever open — including ones that don't exist yet. `claude agents` is machine-wide
-and picks up sessions in any directory automatically. The only per-session action is `/rc`.
+None of it is per-project. Hook config and Remote Control eligibility are user-level, so they
+apply to every project you ever open — including ones that don't exist yet. `claude agents` is
+machine-wide and picks up sessions in any directory automatically. The only per-session action
+is `/rc`.
+
+**Important, learned the hard way:** the built-in `/config` notification toggles
+(`inputNeededNotifEnabled`, `taskCompleteNotifEnabled`, `agentPushNotifEnabled`) did not fire —
+zero times, across nine tests, on a fresh session, with every setting/permission/volume
+confirmed correct. Filed as two bugs (desktop + phone channels). **Step 2 below uses hooks
+instead** — a different, verified-working mechanism — rather than the broken toggles. Still
+worth turning `/config`'s toggles on too, in case it's fixed later; just don't rely on it yet.
 
 ## Important: you cannot type slash commands for the user
 
@@ -63,32 +71,84 @@ shortcuts may change in future versions.
 
 ---
 
-## Step 2 — Notifications
+## Step 2 — Notifications (via hooks, not `/config`)
 
-First detect the terminal, because the notification channel depends on it:
+Claude Code's `hooks` setting runs a real shell command on real lifecycle events. Two events
+matter here:
 
-```bash
-echo "$TERM_PROGRAM"
+- **`Stop`** — fires when a turn finishes ("task complete")
+- **`Notification`** and **`PermissionRequest`** — fire when Claude pauses for approval or a
+  question ("needs input"). Wire both: in testing, a permission prompt fired `Notification`,
+  but `AskUserQuestion` only fired `PermissionRequest` — neither alone covers both pause types.
+
+Write this to `~/.claude/settings.json` (user-level, so it's global):
+
+```json
+{
+  "hooks": {
+    "Stop": [{ "hooks": [{ "type": "command",
+      "command": "afplay -v 2 /System/Library/Sounds/Hero.aiff >/dev/null 2>&1" }] }],
+    "Notification": [{ "hooks": [{ "type": "command",
+      "command": "afplay -v 2 /System/Library/Sounds/Sosumi.aiff >/dev/null 2>&1" }] }],
+    "PermissionRequest": [{ "hooks": [{ "type": "command",
+      "command": "afplay -v 2 /System/Library/Sounds/Sosumi.aiff >/dev/null 2>&1" }] }]
+  }
+}
 ```
 
-- `iTerm.app`, WezTerm, Ghostty, Kitty → recommend **`iterm2_with_bell`** (rich notification + bell)
-- `Apple_Terminal` or anything else → **`terminal_bell`** is what will work; a macOS banner is
-  not available on Apple Terminal. Mention that phone push (Step 3) is the dependable signal
-  for them, and that switching terminals is optional, not required.
+Notes on the recipe:
+- `-v 2` boosts playback volume independent of system volume — a single soft chime at normal
+  volume was inaudible from across a room in testing; boosted, it wasn't.
+- Use two *different* sounds for the two meanings, so the user can tell them apart by ear
+  without looking. `Hero.aiff` (finished) and `Sosumi.aiff` (needs you) worked well; any two
+  distinct files in `/System/Library/Sounds/` work.
+- Merge into the existing `hooks` key if one is already there — don't overwrite other hooks.
 
-Then tell the user to run `/config` and turn on:
+**Hooks only load at session start.** After writing this, the user must restart their session
+(`/exit` then `claude --resume <session-id>`) before testing — editing settings.json alone does
+not reach an already-running process. This applies to every settings.json change in this skill,
+not just hooks.
 
-- **input needed** — fires when a session is waiting for approval or an answer
-- **task complete** — fires when a turn finishes
-
-Afterward, verify rather than assume:
+**Verify, don't assume it worked.** Add a log line ahead of the sound command so firing can be
+confirmed independent of whether it was heard:
 
 ```bash
-jq '{inputNeededNotifEnabled, taskCompleteNotifEnabled, preferredNotifChannel, agentPushNotifEnabled}' ~/.claude/settings.json
+"command": "echo \"STOP fired at $(date)\" >> ~/.claude/hook-fire-log.txt; afplay -v 2 ..."
 ```
 
-Then **test it for real** — start a background session that parks on a question and confirm
-something actually fired. Report what you observed, not what was configured.
+Then check `tail ~/.claude/hook-fire-log.txt` after a real test. This separates two different
+failure modes that are easy to conflate: the hook didn't fire at all, vs. it fired but wasn't
+audible (a volume problem, fixed by `-v 2` or asking about system output volume specifically —
+not the "alert volume" slider, which is a different, unrelated setting).
+
+### Phone sound too — ntfy (optional, ask before building)
+
+A Mac-side hook can only make sound on the Mac. Reaching the phone needs an actual push
+service — the built-in one is the broken `agentPushNotifEnabled` path. **ntfy.sh** is a free,
+purpose-built alternative: install the ntfy app, subscribe to a private unguessable topic (e.g.
+`<name>-claude-<random-hex>`), then add a `curl` call to the same hook commands:
+
+```bash
+curl -s -H 'Title: Claude Code' -H 'Priority: high' -H 'Tags: white_check_mark' \
+  -d 'Task finished' https://ntfy.sh/<topic> >/dev/null 2>&1
+```
+
+Use `Priority: urgent` for the needs-input push (not `default` — that arrived silently in
+testing) and `Priority: high` or above for task-complete. Background it with `&` so it doesn't
+block the sound command.
+
+This is the one part of the workflow that isn't "purely native" — it's a real tradeoff (a third
+app, an unguessable-but-public topic string) and changes the pitch from "nothing to build" to
+"a small notification layer, because the built-in one didn't work." **Ask before building it**
+rather than assuming — some users will prefer to just wait for the native fix.
+
+If they say yes, also walk them through the iOS side, which caused silent/no-lock-screen
+delivery in testing even after the push itself arrived correctly:
+- **Settings → Notifications → ntfy → Sounds** on (separate from "Allow Notifications")
+- **Show Previews → Always** (not "When Unlocked" — that's why nothing showed on the lock screen)
+- **Lock Screen** checked under alert style
+- Inside the ntfy app, on the subscription itself: **Instant delivery** on — a known ntfy-on-iOS
+  gotcha, unrelated to any Claude Code or iOS setting.
 
 ---
 
@@ -145,16 +205,14 @@ Tell the user to do this once:
 1. Install the Claude app (iOS/Android). `/mobile` in Claude Code shows a QR code.
 2. Sign in with the same account. Confirm 2FA is on first.
 3. Accept the OS notification permission prompt.
-4. `/config` → enable **Push when Claude decides** and/or **Push when actions required**.
-5. In whichever session they want reachable: `/rc`. The terminal prints a session URL.
-6. On the phone: **Code** tab → the session appears with a computer icon and a green dot.
+4. In whichever session they want reachable: `/rc`. The terminal prints a session URL.
+5. On the phone: **Code** tab → the session appears with a computer icon and a green dot.
 
-Troubleshooting: if `/config` says **No mobile registered**, opening the app once refreshes its
-push token. On iOS, Focus modes and notification summaries can suppress pushes — check
-Settings → Notifications → Claude.
-
-Note that push is deliberately skipped while they're focused on the connected terminal, so
-"no notification while I was sitting there" is correct behavior, not a fault.
+`/config` also has **Push when Claude decides** / **Push when actions required** toggles for
+Remote Control's own built-in push — turn them on too, but see the note at the top of this
+skill: in testing this path never fired, on a fresh session, with everything else confirmed
+correct. Don't promise it works. Use the ntfy recipe in Step 2 for a channel that's actually
+been verified.
 
 ---
 
