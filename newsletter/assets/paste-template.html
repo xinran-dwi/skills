@@ -1,0 +1,269 @@
+<title>ARTICLE TITLE</title>
+<style>
+  body {
+    max-width: 42rem; margin: 0 auto; padding: 2rem 1.25rem 6rem;
+    font: 17px/1.62 Georgia, 'Times New Roman', serif;
+    color: #1a1a1a; background: #fff;
+  }
+  /* The toolbar is deliberately outside <article> so it can never end up in the
+     clipboard payload. */
+  .bar {
+    position: sticky; top: 0; z-index: 5; background: #fff;
+    border-bottom: 1px solid #e4e4e0; margin: 0 0 2.5rem; padding: 1rem 0 1.1rem;
+    font: 14px/1.5 -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  }
+  .bar h2 { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #888; margin: 0 0 .7rem; font-weight: 600; }
+  .row { display: flex; gap: .5rem; align-items: center; margin-bottom: .5rem; flex-wrap: wrap; }
+  .row label { width: 4.4rem; color: #666; font-size: 13px; }
+  .row input {
+    flex: 1; min-width: 12rem; font: 13px/1.4 -apple-system, Arial, sans-serif;
+    padding: .4rem .5rem; border: 1px solid #dcdcd8; border-radius: 4px; background: #fbfbfa;
+  }
+  button {
+    font: 600 13px/1 -apple-system, 'Helvetica Neue', Arial, sans-serif;
+    padding: .55rem .8rem; border: 1px solid #c9c9c4; border-radius: 5px;
+    background: #f6f6f4; color: #222; cursor: pointer;
+  }
+  button:hover { background: #eeeeeb; }
+  button.main { background: #1a1a1a; color: #fff; border-color: #1a1a1a; padding: .6rem 1rem; }
+  button.main:hover { background: #000; }
+  button:focus-visible { outline: 2px solid #2C6A88; outline-offset: 2px; }
+  #status { margin-left: .6rem; font-size: 13px; color: #2C6A88; }
+  .hint { font-size: 12.5px; color: #777; margin: .7rem 0 0; line-height: 1.5; }
+
+  article h2 { font: 700 1.35rem/1.25 -apple-system, 'Helvetica Neue', Arial, sans-serif; margin: 2.4rem 0 .7rem; }
+  article p, article li { margin: 0 0 1rem; }
+  article ul, article ol { margin: 0 0 1rem; padding-left: 1.4rem; }
+  article li { margin-bottom: .4rem; }
+  article li p { margin: 0 0 .3rem; }
+  article blockquote { margin: 0 0 1rem; padding: .1rem 0 .1rem 1.1rem; border-left: 3px solid #d8d8d8; color: #444; }
+  article blockquote p { font-style: italic; margin: 0; }
+  article pre {
+    background: #f4f4f2; border: 1px solid #e2e2de; border-radius: 4px;
+    padding: .8rem .9rem; overflow-x: auto;
+    font: 13px/1.55 ui-monospace, 'SF Mono', Menlo, monospace; margin: 0 0 1rem;
+  }
+  article code { font: 13px/1.4 ui-monospace, 'SF Mono', Menlo, monospace; background: #f4f4f2; padding: .1em .3em; border-radius: 3px; }
+  article pre code { background: none; padding: 0; }
+  article img { max-width: 100%; height: auto; display: block; margin: 1.4rem 0 .4rem; border: 1px solid #e6e6e2; }
+  article hr { border: none; border-top: 1px solid #ddd; margin: 2.6rem 0; }
+  .imgbtn { margin: 0 0 1rem !important; }
+  .imgbtn button { font-size: 11.5px; padding: .3rem .55rem; color: #666; }
+</style>
+
+<div class="bar">
+  <h2>Send to Substack</h2>
+  <div class="row">
+    <label for="t">Title</label>
+    <input id="t" readonly value="ARTICLE TITLE">
+    <button type="button" onclick="copyField('t', this)">Copy</button>
+  </div>
+  <div class="row">
+    <label for="s">Subtitle</label>
+    <input id="s" readonly value="One-line subtitle, in the author&#39;s voice.">
+    <button type="button" onclick="copyField('s', this)">Copy</button>
+  </div>
+  <div class="row">
+    <button class="main" type="button" onclick="copyArticle(this)">Copy article body</button>
+    <span id="status"></span>
+  </div>
+  <p class="hint">Paste the title and subtitle into Substack's own fields, then click into the body and paste the article. Use the button rather than Cmd+A &mdash; it sends cleaned markup and leaves this toolbar behind.</p>
+</div>
+
+<article id="article">
+
+<h2>A real question the article answers</h2>
+
+<p>Short opener. One or two sentences.</p>
+
+<p>What you had, what you tried, what happened. Contractions throughout.</p>
+
+<!-- Inline every image as a data: URI before shipping. A relative src becomes
+     file:///... on the clipboard and Substack cannot fetch local files. -->
+<img src="data:image/jpeg;base64,REPLACE_WITH_INLINED_IMAGE" alt="Describe the image for readers who can't see it">
+<p data-nocopy class="imgbtn"><button type="button" onclick="copyImage(this)">Copy this image</button></p>
+<p><em>Caption. Move this into Substack's caption field after pasting.</em></p>
+
+<p>Here's what we'll cover:</p>
+
+<ul>
+  <li><p><strong>Setting it up</strong> &mdash; how long, and how often</p></li>
+  <li><p><strong>What I actually did</strong> &mdash; verbatim</p></li>
+  <li><p><strong>What it cost</strong> &mdash; real numbers</p></li>
+  <li><p><strong>What I got wrong</strong> &mdash; so you can skip it</p></li>
+</ul>
+
+<p>New to any of this? <strong>Tool name</strong> is &mdash; short analogy to something the reader already uses. You don't need to know how it works to follow along.</p>
+
+<p>Let's get into it.</p>
+
+<hr>
+
+<h2>1. Set it up first</h2>
+
+<p><strong>What you need:</strong> ... &middot; ... &middot; about N minutes.</p>
+
+<!-- Number steps by hand. A <pre> block is not valid inside <li>, so a real <ol>
+     with code in it gets split and the numbering restarts. -->
+<p><strong>Step 1.</strong> First thing to do.</p>
+
+<p><strong>Step 2.</strong> Second thing, with a command to paste:</p>
+
+<pre><code>the command</code></pre>
+
+<hr>
+
+<h2>2. What I actually did</h2>
+
+<!-- Verbatim prompts keep their typos - they show how little precision was
+     needed. Wrap the text in <p> so the quote survives the paste. -->
+<blockquote><p>exactly what was typed, typos and all</p></blockquote>
+
+<p>&rarr; What happened as a result.</p>
+
+<hr>
+
+<h2>3. What it cost</h2>
+
+<!-- Substack has NO table support. Render tables as images and put the figures
+     in the alt text so the data survives for screen readers and search. -->
+<img src="data:image/png;base64,REPLACE_WITH_INLINED_IMAGE" alt="Full figures spelled out here">
+<p data-nocopy class="imgbtn"><button type="button" onclick="copyImage(this)">Copy this image</button></p>
+<p><em>What each change cost.</em></p>
+
+<hr>
+
+<h2>4. N things I got wrong</h2>
+
+<!-- h3 pastes unpredictably - bold lead-ins are the reliable sub-heading, and
+     they match the newsletter's own habit anyway. -->
+<p><strong>1. The first lesson, stated as a claim.</strong><br>
+What happened, and what to do instead.</p>
+
+<p><strong>2. The second lesson.</strong><br>
+Same shape.</p>
+
+<hr>
+
+<h2>That's enough for now</h2>
+
+<p>What this does and doesn't replace. Short.</p>
+
+<p>Sign-off &mdash; make this one the author's own.</p>
+
+</article>
+
+<script>
+// Substack's editor is ProseMirror. It parses pasted HTML against a strict
+// schema and quietly drops or reshapes anything that doesn't fit, which is why
+// hand-copying a styled page gives inconsistent headings and broken lists.
+// Handing it markup that already matches the schema is what makes the paste
+// deterministic.
+function clean(root) {
+  const c = root.cloneNode(true);
+  // Helper controls live inside the article so they sit next to what they act
+  // on. Strip them before serialising, or they land in the draft.
+  c.querySelectorAll('[data-nocopy]').forEach(el => el.remove());
+  c.querySelectorAll('*').forEach(el => {
+    el.removeAttribute('class');
+    el.removeAttribute('style');
+    el.removeAttribute('id');
+  });
+  // ProseMirror wants block content inside list items and quotes, not bare text.
+  c.querySelectorAll('li, blockquote').forEach(el => {
+    const hasBlock = Array.from(el.children)
+      .some(ch => /^(P|UL|OL|PRE|BLOCKQUOTE|H[1-6])$/.test(ch.tagName));
+    if (!hasBlock && el.textContent.trim()) {
+      const p = document.createElement('p');
+      while (el.firstChild) p.appendChild(el.firstChild);
+      el.appendChild(p);
+    }
+  });
+  return c.innerHTML;
+}
+
+function say(msg) {
+  const el = document.getElementById('status');
+  el.textContent = msg;
+  clearTimeout(say._t);
+  say._t = setTimeout(() => { el.textContent = ''; }, 4000);
+}
+
+// Copy from a detached, off-screen node so nothing on the visible page ends up
+// selected. This path is synchronous, which matters: it runs inside the click's
+// user-activation window. Anything after an `await` may have lost that window,
+// and in a sandboxed iframe (which is how a published page is embedded) that is
+// the difference between the button working and doing nothing.
+function writeRichSync(html) {
+  const holder = document.createElement('div');
+  holder.setAttribute('contenteditable', 'true');
+  holder.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0;';
+  holder.innerHTML = html;
+  document.body.appendChild(holder);
+  const range = document.createRange();
+  range.selectNodeContents(holder);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+  sel.removeAllRanges();
+  holder.remove();
+  return ok;
+}
+
+async function writeRich(html, plain) {
+  if (writeRichSync(html)) return true;
+  try {
+    if (navigator.clipboard && window.ClipboardItem) {
+      await navigator.clipboard.write([new ClipboardItem({
+        'text/html':  new Blob([html],  { type: 'text/html'  }),
+        'text/plain': new Blob([plain], { type: 'text/plain' })
+      })]);
+      return true;
+    }
+  } catch (e) { /* nothing left to try */ }
+  return false;
+}
+
+async function copyArticle(btn) {
+  const article = document.getElementById('article');
+  const ok = await writeRich(clean(article), article.innerText);
+  say(ok ? 'Copied. Paste into the Substack body.' : 'Copy failed - select the article and press Cmd+C.');
+}
+
+// Fallback for images: copy one picture on its own, then paste it straight into
+// the Substack body. The clipboard only takes PNG for images, so re-encode
+// through a canvas regardless of the source format.
+async function copyImage(btn) {
+  const img = btn.closest('p').previousElementSibling;
+  if (!img || img.tagName !== 'IMG') { say('No image found next to that button.'); return; }
+  // Selecting the <img> and copying works inside a sandbox and keeps the click's
+  // user activation, so try it before the async clipboard call.
+  if (writeRichSync(img.outerHTML)) { say('Image copied. Paste it into Substack.'); return; }
+  try {
+    const cv = document.createElement('canvas');
+    cv.width = img.naturalWidth; cv.height = img.naturalHeight;
+    cv.getContext('2d').drawImage(img, 0, 0);
+    const blob = await new Promise(r => cv.toBlob(r, 'image/png'));
+    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+    say('Image copied. Paste it into Substack.');
+  } catch (e) {
+    say('Copy failed - drag the file in from images/ instead.');
+  }
+}
+
+async function copyField(id, btn) {
+  const v = document.getElementById(id).value;
+  try {
+    await navigator.clipboard.writeText(v);
+    say('Copied.');
+  } catch (e) {
+    const el = document.getElementById(id);
+    el.removeAttribute('readonly'); el.select();
+    document.execCommand('copy');
+    el.setAttribute('readonly', '');
+    say('Copied.');
+  }
+}
+</script>
