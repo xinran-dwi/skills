@@ -6,7 +6,7 @@ More resources like this on: designwithai.co
 
 ## What it is
 
-A setup skill for anyone running Claude Code on more than one project at the same time. Instead of cycling through terminal windows hunting for the one that paused on an approval prompt, you get a single dashboard showing every session and which one needs you, a notification when a session needs input or finishes, and the option to check in and reply from your phone when you step away. Everything it configures is already built into Claude Code — nothing is installed, and there are no scripts or config files to maintain afterward.
+A setup skill for anyone running Claude Code on more than one project at the same time. Instead of cycling through terminal windows hunting for the one that paused on an approval prompt, you get a single dashboard showing every session and which one needs you, a notification when a session needs input or finishes, and the option to check in and reply from your phone when you step away. The dashboard and phone access are built into Claude Code. Notifications use a few lines of hooks in your `~/.claude/settings.json`, because Claude Code's built-in notification toggles didn't fire in testing. Nothing else gets installed.
 
 ## When to use it
 
@@ -33,7 +33,7 @@ Restart Claude Code.
 
 2. **Open the dashboard** — run `claude agents` in any terminal. Every Claude Code session on your machine appears in one list, grouped by state, no matter which project it belongs to. Sessions name themselves from the task you gave them. Press `Space` to peek at one's output, `Enter` to jump into it.
 
-3. **Turn on notifications** — the skill tells you which notification channel suits your terminal, then you run `/config` and enable "input needed" and "task complete". It verifies the settings landed and tests that something actually fires, rather than assuming.
+3. **Turn on notifications** — the skill adds hooks to `~/.claude/settings.json` that play one sound when a session finishes and a different one when it needs your input, so you can tell them apart without looking. It then runs a tiny background session to prove the hooks actually fire, rather than assuming. Optionally, it can also send the alerts to your phone through the free ntfy app. (It skips the `/config` notification toggles: in testing they never fired.)
 
 4. **Connect your phone** — install the Claude app, sign in, then type `/rc` in any session you want reachable. That session shows up under the **Code** tab on your phone, where you can read output, answer permission prompts, and send new instructions.
 

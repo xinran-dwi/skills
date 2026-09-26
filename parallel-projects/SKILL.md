@@ -116,7 +116,17 @@ confirmed independent of whether it was heard:
 "command": "echo \"STOP fired at $(date)\" >> ~/.claude/hook-fire-log.txt; afplay -v 2 ..."
 ```
 
-Then check `tail ~/.claude/hook-fire-log.txt` after a real test. This separates two different
+Then prove the `Stop` hook fires yourself — no need to ask the user to test. A headless session
+loads the new settings.json and fires `Stop` when it finishes:
+
+```bash
+before=$(wc -l < ~/.claude/hook-fire-log.txt 2>/dev/null || echo 0)
+claude -p "Reply with just: ok" < /dev/null >/dev/null 2>&1; sleep 2
+tail -n +$((before + 1)) ~/.claude/hook-fire-log.txt   # expect a new "STOP fired" line
+```
+
+The needs-input hooks can't be triggered headlessly, so for those ask the user to restart and
+hit a permission prompt, then check `tail ~/.claude/hook-fire-log.txt`. This separates two different
 failure modes that are easy to conflate: the hook didn't fire at all, vs. it fired but wasn't
 audible (a volume problem, fixed by `-v 2` or asking about system output volume specifically —
 not the "alert volume" slider, which is a different, unrelated setting).
